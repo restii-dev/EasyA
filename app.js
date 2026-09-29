@@ -1,20 +1,21 @@
 /**
  * EasyA - Complex Unblocked Games Platform
- * Features: 30s help-site disguise, key system, multi-engine proxy, tab cloaking, panic key
+ * Features: 30s help-site disguise, key system, admin key manager (SUB-RESTI-1738),
+ * multi-engine proxy, tab cloaking, panic key
  */
 
 // ========== CONFIG ========== //
 const CONFIG = {
-    helpDuration: 30000, // 30 seconds
-    // Valid keys (in production you'd hash/validate server-side)
-    validKeys: [
+    helpDuration: 30000,
+    adminKey: 'SUB-RESTI-1738',
+    // Fallback keys if keys.json fails to load
+    fallbackKeys: [
         'EASY-A202-6KEY-GEORG',
         'GEOR-GIAH-SKEY-2026',
         'UNBL-OCKD-GAME-EASYA',
         'PROX-YKEY-COMP-LEX1',
         'TEST-KEY1-2345-6789'
     ],
-    // Complex proxy endpoints (simulated multi-node routing)
     proxyEngines: {
         ultraviolet: {
             name: 'Ultraviolet',
@@ -37,14 +38,13 @@ const CONFIG = {
             encode: (url) => url.split('').map(c => c.charCodeAt(0).toString(16)).join('')
         }
     },
-    // Fallback proxy service for demo (public CORS proxies + iframe techniques)
     publicProxies: [
         'https://corsproxy.io/?',
         'https://api.allorigins.win/raw?url='
     ]
 };
 
-// ========== GAMES DATABASE ========== //
+// ========== GAMES & APPS ========== //
 const GAMES = [
     { id: 1, name: 'Slope', icon: '🏂', category: 'Arcade', url: 'https://slopegame.io/' },
     { id: 2, name: '1v1.LOL', icon: '🔫', category: 'Shooter', url: 'https://1v1.lol/' },
@@ -65,7 +65,7 @@ const GAMES = [
     { id: 17, name: 'Crossy Road', icon: '🐔', category: 'Arcade', url: 'https://poki.com/en/g/crossy-road' },
     { id: 18, name: 'Temple Run 2', icon: '🏛️', category: 'Runner', url: 'https://poki.com/en/g/temple-run-2' },
     { id: 19, name: 'Fireboy & Watergirl', icon: '🔥', category: 'Puzzle', url: 'https://poki.com/en/g/fireboy-and-watergirl-1-forest-temple' },
-    { id: 20, name: 'Papa\'s Pizzeria', icon: '🍕', category: 'Cooking', url: 'https://www.coolmathgames.com/0-papas-pizzeria' },
+    { id: 20, name: "Papa's Pizzeria", icon: '🍕', category: 'Cooking', url: 'https://www.coolmathgames.com/0-papas-pizzeria' },
     { id: 21, name: 'Run 3', icon: '🏃‍♂️', category: 'Runner', url: 'https://www.coolmathgames.com/0-run-3' },
     { id: 22, name: 'Moto X3M', icon: '🏍️', category: 'Racing', url: 'https://www.coolmathgames.com/0-moto-x3m' },
     { id: 23, name: 'Happy Wheels', icon: '🚲', category: 'Physics', url: 'https://www.totaljerkface.com/happy_wheels.tjf' },
@@ -90,18 +90,66 @@ const APPS = [
 // ========== STATE ========== //
 const state = {
     authenticated: false,
+    isAdmin: false,
     currentTab: 'games',
     proxyHistory: [],
     proxyIndex: -1,
     cloakActive: false,
     originalTitle: document.title,
-    originalFavicon: null
+    validKeys: [],          // from keys.json + localStorage custom
+    customKeys: [],         // user-added via admin
+    baseKeys: []            // original from keys.json
 };
 
+// ========== KEY STORAGE ========== //
+function loadCustomKeys() {
+    try {
+        const raw = localStorage.getItem('easya_custom_keys');
+        return raw ? JSON.parse(raw) : [];
+    } catch {
+        return [];
+    }
+}
+
+function saveCustomKeys() {
+    localStorage.setItem('easya_custom_keys', JSON.stringify(state.customKeys));
+}
+
+function getAllValidKeys() {
+    const set = new Set([
+        CONFIG.adminKey,
+        ...state.baseKeys,
+        ...state.customKeys,
+        ...CONFIG.fallbackKeys
+    ]);
+    return Array.from(set);
+}
+
+function isValidKey(key) {
+    return getAllValidKeys().includes(key.toUpperCase());
+}
+
+async function loadKeysFromRepo() {
+    try {
+        const res = await fetch('keys.json?t=' + Date.now());
+        if (!res.ok) throw new Error('fetch failed');
+        const data = await res.json();
+        state.baseKeys = (data.keys || []).map(k => k.toUpperCase());
+        if (data.adminKey) CONFIG.adminKey = data.adminKey.toUpperCase();
+    } catch (e) {
+        console.warn('Could not load keys.json, using fallbacks', e);
+        state.baseKeys = [...CONFIG.fallbackKeys];
+    }
+    state.customKeys = loadCustomKeys().map(k => k.toUpperCase());
+    state.validKeys = getAllValidKeys();
+}
+
 // ========== INIT ========== //
-document.addEventListener('DOMContentLoaded', () => {
-    // Check if already authenticated this session
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadKeysFromRepo();
+
     if (sessionStorage.getItem('easya_auth') === 'true') {
+        state.isAdmin = sessionStorage.getItem('easya_admin') === 'true';
         skipToApp();
     } else {
         startHelpCountdown();
@@ -115,17 +163,16 @@ document.addEventListener('DOMContentLoaded', () => {
     setupSettings();
     setupPanicKey();
     setupCloak();
+    setupAdminPanel();
 });
 
 // ========== HELP SITE COUNTDOWN ========== //
 function startHelpCountdown() {
     const countdownEl = document.getElementById('countdown');
     let remaining = 30;
-
     const interval = setInterval(() => {
         remaining--;
         if (countdownEl) countdownEl.textContent = remaining;
-
         if (remaining <= 0) {
             clearInterval(interval);
             transitionToAuth();
@@ -136,11 +183,9 @@ function startHelpCountdown() {
 function transitionToAuth() {
     const helpSite = document.getElementById('help-site');
     const authLayer = document.getElementById('auth-layer');
-
     helpSite.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
     helpSite.style.opacity = '0';
     helpSite.style.transform = 'scale(0.98)';
-
     setTimeout(() => {
         helpSite.classList.add('hidden');
         authLayer.classList.remove('hidden');
@@ -153,17 +198,16 @@ function skipToApp() {
     document.getElementById('auth-layer').classList.add('hidden');
     document.getElementById('main-app').classList.remove('hidden');
     state.authenticated = true;
-    document.title = 'EasyA';
+    document.title = state.isAdmin ? 'EasyA | Admin' : 'EasyA';
+    if (state.isAdmin) showAdminNav();
 }
 
 // ========== KEY SYSTEM ========== //
 function setupKeyForm() {
     const form = document.getElementById('key-form');
     const input = document.getElementById('access-key');
-    const status = document.getElementById('key-status');
     const btn = document.getElementById('unlock-btn');
 
-    // Auto-format key as user types
     input.addEventListener('input', (e) => {
         let val = e.target.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
         let formatted = '';
@@ -187,18 +231,25 @@ function setupKeyForm() {
         document.querySelector('.btn-text').classList.add('hidden');
         document.querySelector('.btn-loader').classList.remove('hidden');
 
-        // Simulate complex verification (hash check + timing attack resistance)
         await simulateKeyVerification(key);
 
-        if (CONFIG.validKeys.includes(key)) {
-            showKeyStatus('✓ Key validated. Initializing proxy chain...', 'success');
+        const isAdmin = key === CONFIG.adminKey;
+        const valid = isAdmin || isValidKey(key);
 
-            // Complex multi-step unlock sequence
-            await new Promise(r => setTimeout(r, 1200));
+        if (valid) {
+            if (isAdmin) {
+                showKeyStatus('✓ ADMIN KEY ACCEPTED. Full access granted.', 'success');
+                state.isAdmin = true;
+                sessionStorage.setItem('easya_admin', 'true');
+            } else {
+                showKeyStatus('✓ Key validated. Initializing proxy chain...', 'success');
+            }
+
+            await new Promise(r => setTimeout(r, 1000));
             showKeyStatus('✓ Establishing encrypted tunnel...', 'success');
-            await new Promise(r => setTimeout(r, 900));
-            showKeyStatus('✓ Proxy nodes online. Welcome to EasyA.', 'success');
-            await new Promise(r => setTimeout(r, 700));
+            await new Promise(r => setTimeout(r, 800));
+            showKeyStatus(isAdmin ? '✓ Admin panel unlocked. Welcome, Operator.' : '✓ Proxy nodes online. Welcome to EasyA.', 'success');
+            await new Promise(r => setTimeout(r, 600));
 
             sessionStorage.setItem('easya_auth', 'true');
             unlockApp();
@@ -207,8 +258,6 @@ function setupKeyForm() {
             btn.disabled = false;
             document.querySelector('.btn-text').classList.remove('hidden');
             document.querySelector('.btn-loader').classList.add('hidden');
-
-            // Shake animation
             input.style.animation = 'none';
             input.offsetHeight;
             input.style.animation = 'shake 0.4s ease';
@@ -223,29 +272,203 @@ function showKeyStatus(msg, type) {
 }
 
 async function simulateKeyVerification(key) {
-    // Fake complex crypto-style delay based on key entropy
     const entropy = key.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-    const delay = 800 + (entropy % 600);
-    await new Promise(r => setTimeout(r, delay));
+    await new Promise(r => setTimeout(r, 800 + (entropy % 600)));
 }
 
 function unlockApp() {
     const authLayer = document.getElementById('auth-layer');
     const mainApp = document.getElementById('main-app');
-
     authLayer.style.transition = 'opacity 0.6s ease';
     authLayer.style.opacity = '0';
-
     setTimeout(() => {
         authLayer.classList.add('hidden');
         mainApp.classList.remove('hidden');
         state.authenticated = true;
-        document.title = 'EasyA';
-
-        // Update proxy status indicator
+        document.title = state.isAdmin ? 'EasyA | Admin' : 'EasyA';
         const statusDot = document.querySelector('.status-dot');
         if (statusDot) statusDot.style.background = 'var(--success)';
+        if (state.isAdmin) showAdminNav();
     }, 600);
+}
+
+function showAdminNav() {
+    const btn = document.getElementById('admin-nav-btn');
+    if (btn) btn.classList.remove('hidden');
+}
+
+// ========== ADMIN PANEL ========== //
+function setupAdminPanel() {
+    const addBtn = document.getElementById('add-key-btn');
+    const genBtn = document.getElementById('gen-key-btn');
+    const newInput = document.getElementById('new-key-input');
+    const filterInput = document.getElementById('key-filter');
+    const exportBtn = document.getElementById('export-keys-btn');
+    const importBtn = document.getElementById('import-keys-btn');
+    const importFile = document.getElementById('import-file');
+    const resetBtn = document.getElementById('reset-keys-btn');
+    const clearBtn = document.getElementById('clear-custom-btn');
+
+    // Format new key input
+    newInput.addEventListener('input', (e) => {
+        let val = e.target.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+        let formatted = '';
+        for (let i = 0; i < val.length && i < 16; i++) {
+            if (i > 0 && i % 4 === 0) formatted += '-';
+            formatted += val[i];
+        }
+        e.target.value = formatted;
+    });
+
+    addBtn.addEventListener('click', () => {
+        const key = newInput.value.trim().toUpperCase();
+        if (!key || key.length < 19) {
+            showAdminStatus('Enter a full 16-character key (XXXX-XXXX-XXXX-XXXX)', 'error');
+            return;
+        }
+        if (isValidKey(key) || key === CONFIG.adminKey) {
+            showAdminStatus('Key already exists', 'error');
+            return;
+        }
+        state.customKeys.push(key);
+        saveCustomKeys();
+        state.validKeys = getAllValidKeys();
+        newInput.value = '';
+        showAdminStatus('✓ Key added: ' + key, 'success');
+        renderKeysList();
+        updateAdminStats();
+    });
+
+    genBtn.addEventListener('click', () => {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let key = '';
+        for (let i = 0; i < 16; i++) {
+            if (i > 0 && i % 4 === 0) key += '-';
+            key += chars[Math.floor(Math.random() * chars.length)];
+        }
+        newInput.value = key;
+    });
+
+    filterInput.addEventListener('input', () => renderKeysList(filterInput.value));
+
+    exportBtn.addEventListener('click', () => {
+        const payload = {
+            adminKey: CONFIG.adminKey,
+            description: 'EasyA key export — paste into keys.json or import via Admin panel',
+            keys: getAllValidKeys().filter(k => k !== CONFIG.adminKey),
+            exportedAt: new Date().toISOString()
+        };
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'easya-keys-export.json';
+        a.click();
+        URL.revokeObjectURL(a.href);
+        showAdminStatus('✓ Exported ' + payload.keys.length + ' keys', 'success');
+    });
+
+    importBtn.addEventListener('click', () => importFile.click());
+    importFile.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        try {
+            const text = await file.text();
+            const data = JSON.parse(text);
+            const incoming = (data.keys || []).map(k => k.toUpperCase());
+            let added = 0;
+            incoming.forEach(k => {
+                if (!isValidKey(k) && k !== CONFIG.adminKey) {
+                    state.customKeys.push(k);
+                    added++;
+                }
+            });
+            saveCustomKeys();
+            state.validKeys = getAllValidKeys();
+            renderKeysList();
+            updateAdminStats();
+            showAdminStatus('✓ Imported ' + added + ' new keys', 'success');
+        } catch {
+            showAdminStatus('Invalid JSON file', 'error');
+        }
+        importFile.value = '';
+    });
+
+    resetBtn.addEventListener('click', async () => {
+        if (!confirm('Reset all keys to keys.json defaults? Custom keys will be cleared.')) return;
+        state.customKeys = [];
+        saveCustomKeys();
+        await loadKeysFromRepo();
+        renderKeysList();
+        updateAdminStats();
+        showAdminStatus('✓ Reset to keys.json defaults', 'success');
+    });
+
+    clearBtn.addEventListener('click', () => {
+        if (!confirm('Clear all custom (admin-added) keys?')) return;
+        state.customKeys = [];
+        saveCustomKeys();
+        state.validKeys = getAllValidKeys();
+        renderKeysList();
+        updateAdminStats();
+        showAdminStatus('✓ Custom keys cleared', 'success');
+    });
+}
+
+function showAdminStatus(msg, type) {
+    const el = document.getElementById('admin-add-status');
+    if (!el) return;
+    el.textContent = msg;
+    el.className = 'key-status ' + type;
+}
+
+function updateAdminStats() {
+    const total = getAllValidKeys().length;
+    const custom = state.customKeys.length;
+    const countEl = document.getElementById('key-count');
+    const customEl = document.getElementById('custom-count');
+    if (countEl) countEl.textContent = total;
+    if (customEl) customEl.textContent = custom;
+}
+
+function renderKeysList(filter = '') {
+    const list = document.getElementById('keys-list');
+    if (!list) return;
+
+    const all = getAllValidKeys();
+    const filtered = filter
+        ? all.filter(k => k.includes(filter.toUpperCase()))
+        : all;
+
+    list.innerHTML = filtered.map(key => {
+        const isAdmin = key === CONFIG.adminKey;
+        const isCustom = state.customKeys.includes(key);
+        let badges = '';
+        if (isAdmin) badges += '<span class="key-badge admin-badge-sm">ADMIN</span>';
+        if (isCustom) badges += '<span class="key-badge custom-badge">CUSTOM</span>';
+
+        const deleteBtn = (isCustom && !isAdmin)
+            ? `<button class="delete-key-btn" data-key="${key}" title="Delete">✕</button>`
+            : '';
+
+        return `<div class="key-row ${isCustom ? 'custom' : ''}">
+            <span class="key-text">${key}${badges}</span>
+            ${deleteBtn}
+        </div>`;
+    }).join('') || '<p style="color:var(--text-muted);padding:1rem">No keys match filter</p>';
+
+    list.querySelectorAll('.delete-key-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const key = btn.dataset.key;
+            state.customKeys = state.customKeys.filter(k => k !== key);
+            saveCustomKeys();
+            state.validKeys = getAllValidKeys();
+            renderKeysList(document.getElementById('key-filter').value);
+            updateAdminStats();
+            showAdminStatus('✓ Deleted ' + key, 'success');
+        });
+    });
+
+    updateAdminStats();
 }
 
 // ========== NAVIGATION ========== //
@@ -254,11 +477,16 @@ function setupNavigation() {
         btn.addEventListener('click', () => {
             const tab = btn.dataset.tab;
             switchTab(tab);
+            if (tab === 'admin' && state.isAdmin) {
+                renderKeysList();
+                updateAdminStats();
+            }
         });
     });
 
     document.getElementById('logout-btn').addEventListener('click', () => {
         sessionStorage.removeItem('easya_auth');
+        sessionStorage.removeItem('easya_admin');
         location.reload();
     });
 
@@ -274,9 +502,11 @@ function setupNavigation() {
 function switchTab(tab) {
     state.currentTab = tab;
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+    const activeBtn = document.querySelector(`[data-tab="${tab}"]`);
+    if (activeBtn) activeBtn.classList.add('active');
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-    document.getElementById(`${tab}-tab`).classList.add('active');
+    const panel = document.getElementById(`${tab}-tab`);
+    if (panel) panel.classList.add('active');
 }
 
 // ========== GAMES ========== //
@@ -289,7 +519,6 @@ function setupGames() {
             g.name.toLowerCase().includes(filter.toLowerCase()) ||
             g.category.toLowerCase().includes(filter.toLowerCase())
         );
-
         grid.innerHTML = filtered.map(g => `
             <div class="game-card" data-id="${g.id}" data-url="${g.url}" data-name="${g.name}">
                 <div class="game-thumb">${g.icon}</div>
@@ -299,19 +528,13 @@ function setupGames() {
                 </div>
             </div>
         `).join('');
-
         grid.querySelectorAll('.game-card').forEach(card => {
-            card.addEventListener('click', () => {
-                openGame(card.dataset.name, card.dataset.url);
-            });
+            card.addEventListener('click', () => openGame(card.dataset.name, card.dataset.url));
         });
     }
 
     renderGames();
-
     search.addEventListener('input', (e) => renderGames(e.target.value));
-
-    // Game modal controls
     document.getElementById('game-close').addEventListener('click', closeGame);
     document.getElementById('game-fullscreen').addEventListener('click', () => {
         const frame = document.getElementById('game-frame');
@@ -323,35 +546,26 @@ function openGame(name, url) {
     const modal = document.getElementById('game-modal');
     const frame = document.getElementById('game-frame');
     document.getElementById('game-title').textContent = name;
-
-    // Route through complex proxy chain for "unblocking"
-    const proxied = buildProxiedUrl(url, 'ultraviolet');
-    frame.src = proxied;
-
+    frame.src = buildProxiedUrl(url, 'ultraviolet');
     modal.classList.remove('hidden');
 }
 
 function closeGame() {
-    const modal = document.getElementById('game-modal');
-    const frame = document.getElementById('game-frame');
-    frame.src = 'about:blank';
-    modal.classList.add('hidden');
+    document.getElementById('game-frame').src = 'about:blank';
+    document.getElementById('game-modal').classList.add('hidden');
 }
 
 // ========== APPS ========== //
 function setupApps() {
     const grid = document.getElementById('apps-grid');
-
     grid.innerHTML = APPS.map(a => `
         <div class="app-card" data-url="${a.url}" data-name="${a.name}">
             <div class="app-icon">${a.icon}</div>
             <h3>${a.name}</h3>
         </div>
     `).join('');
-
     grid.querySelectorAll('.app-card').forEach(card => {
         card.addEventListener('click', () => {
-            // Switch to proxy tab and load
             switchTab('proxy');
             document.getElementById('proxy-url').value = card.dataset.url;
             navigateProxy(card.dataset.url);
@@ -359,7 +573,7 @@ function setupApps() {
     });
 }
 
-// ========== COMPLEX PROXY SYSTEM ========== //
+// ========== PROXY ========== //
 function setupProxy() {
     const goBtn = document.getElementById('proxy-go');
     const urlInput = document.getElementById('proxy-url');
@@ -368,8 +582,6 @@ function setupProxy() {
     goBtn.addEventListener('click', () => {
         let url = urlInput.value.trim();
         if (!url) return;
-
-        // Smart URL handling
         if (!url.startsWith('http://') && !url.startsWith('https://')) {
             if (url.includes('.') && !url.includes(' ')) {
                 url = 'https://' + url;
@@ -377,7 +589,6 @@ function setupProxy() {
                 url = 'https://www.google.com/search?q=' + encodeURIComponent(url);
             }
         }
-
         navigateProxy(url);
     });
 
@@ -391,42 +602,34 @@ function setupProxy() {
             loadProxyUrl(state.proxyHistory[state.proxyIndex]);
         }
     });
-
     document.getElementById('proxy-forward').addEventListener('click', () => {
         if (state.proxyIndex < state.proxyHistory.length - 1) {
             state.proxyIndex++;
             loadProxyUrl(state.proxyHistory[state.proxyIndex]);
         }
     });
-
     document.getElementById('proxy-reload').addEventListener('click', () => {
-        if (state.proxyHistory[state.proxyIndex]) {
-            loadProxyUrl(state.proxyHistory[state.proxyIndex], true);
-        }
+        if (state.proxyHistory[state.proxyIndex]) loadProxyUrl(state.proxyHistory[state.proxyIndex], true);
     });
-
     document.getElementById('proxy-home').addEventListener('click', () => {
         document.getElementById('proxy-frame').src = 'about:blank';
         overlay.classList.remove('hidden');
         overlay.querySelector('p').textContent = 'Proxy ready. Enter a URL above.';
         overlay.querySelector('.proxy-detail').textContent = 'Multi-node obfuscation layer standing by';
     });
-
     document.getElementById('proxy-inspect').addEventListener('click', () => {
-        alert('Inspect Element unlocked.\n\nRight-click → Inspect (or F12) works inside the proxy frame on most engines.\n\nAdvanced: Use the Alloy engine for deepest DOM rewriting.');
+        alert('Inspect Element unlocked.\n\nRight-click → Inspect (or F12) works inside the proxy frame on most engines.');
     });
 }
 
 function navigateProxy(url) {
-    // Add to history
     state.proxyHistory = state.proxyHistory.slice(0, state.proxyIndex + 1);
     state.proxyHistory.push(url);
     state.proxyIndex = state.proxyHistory.length - 1;
-
     loadProxyUrl(url);
 }
 
-function loadProxyUrl(url, forceReload = false) {
+function loadProxyUrl(url) {
     const frame = document.getElementById('proxy-frame');
     const overlay = document.getElementById('proxy-overlay');
     const engine = document.getElementById('proxy-engine').value;
@@ -435,100 +638,49 @@ function loadProxyUrl(url, forceReload = false) {
     overlay.querySelector('p').textContent = 'Initializing complex proxy chain...';
     overlay.querySelector('.proxy-detail').textContent = `Routing via ${CONFIG.proxyEngines[engine].name} • multi-node obfuscation`;
 
-    // Simulate complex proxy handshake
     setTimeout(() => {
         overlay.querySelector('p').textContent = 'Encrypting request payload...';
         overlay.querySelector('.proxy-detail').textContent = 'AES-256 + XOR scramble layer active';
     }, 400);
-
     setTimeout(() => {
         overlay.querySelector('p').textContent = 'Connecting to edge node...';
         overlay.querySelector('.proxy-detail').textContent = 'Node cluster: US-EAST → EU-WEST → ANON';
     }, 900);
-
     setTimeout(() => {
-        const proxied = buildProxiedUrl(url, engine);
-
-        // For demo purposes we use a public CORS proxy + direct where possible
-        // Real UV/Rammerhead would need a backend server
-        try {
-            // Attempt to load via constructed proxy path first, fallback to direct/CORS
-            frame.src = proxied;
-
-            // Fallback after short delay if about:blank style failure
-            setTimeout(() => {
-                // If the custom proxy path doesn't resolve (static host), use CORS proxy
-                if (frame.contentDocument === null || frame.src.includes('/uv/') || frame.src.includes('/dynamic/')) {
-                    const fallback = CONFIG.publicProxies[0] + encodeURIComponent(url);
-                    // Many sites block framing, so we also try direct
-                    frame.src = url;
-                }
-                overlay.classList.add('hidden');
-            }, 600);
-        } catch (err) {
-            frame.src = url;
-            overlay.classList.add('hidden');
-        }
-
+        frame.src = buildProxiedUrl(url, engine);
+        setTimeout(() => overlay.classList.add('hidden'), 600);
         document.getElementById('proxy-url').value = url;
     }, 1600);
 }
 
-/**
- * Build a "complex" proxied URL using the selected engine's encoding scheme.
- * In a real deployment this would point to your self-hosted UV / Rammerhead / etc.
- */
 function buildProxiedUrl(url, engineName) {
     const engine = CONFIG.proxyEngines[engineName] || CONFIG.proxyEngines.ultraviolet;
-    const encoded = engine.encode(url);
-
-    // On static hosts the /uv/service/ path won't exist, so we return a composite
-    // that demonstrates the complex encoding while falling back gracefully.
-    // Real production: return location.origin + engine.prefix + encoded;
-
-    // Complex multi-layer encoding for demonstration
-    const layer1 = btoa(url);
-    const layer2 = layer1.split('').reverse().join('');
-    const layer3 = engine.encode(url);
-
-    // Store the real target in session for the frame loader
     sessionStorage.setItem('proxy_target', url);
     sessionStorage.setItem('proxy_engine', engineName);
-
-    // Return a data URL that shows the proxy is "working" then redirects,
-    // or simply the original URL with a comment that backend is required.
-    // For maximum realism on static hosting we load the target directly
-    // while the UI shows the full complex proxy choreography.
+    // Static host fallback — full UV/RH needs a backend
     return url;
 }
 
-// ========== SETTINGS & CLOAKING ========== //
+// ========== SETTINGS & CLOAK ========== //
 function setupSettings() {
     document.getElementById('theme-select').addEventListener('change', (e) => {
         document.body.className = '';
-        if (e.target.value !== 'dark') {
-            document.body.classList.add('theme-' + e.target.value);
-        }
+        if (e.target.value !== 'dark') document.body.classList.add('theme-' + e.target.value);
         localStorage.setItem('easya_theme', e.target.value);
     });
-
-    // Restore theme
     const savedTheme = localStorage.getItem('easya_theme');
     if (savedTheme) {
         document.getElementById('theme-select').value = savedTheme;
         if (savedTheme !== 'dark') document.body.classList.add('theme-' + savedTheme);
     }
-
     document.getElementById('about-blank-btn').addEventListener('click', () => {
         const win = window.open('about:blank', '_blank');
         if (win) {
-            win.document.write(`
-                <!DOCTYPE html><html><head><title>Google Classroom</title>
+            win.document.write(`<!DOCTYPE html><html><head><title>Google Classroom</title>
                 <link rel="icon" href="https://ssl.gstatic.com/classroom/favicon.png">
                 </head><body style="margin:0">
                 <iframe src="${location.href}" style="border:none;width:100%;height:100vh"></iframe>
-                </body></html>
-            `);
+                </body></html>`);
             win.document.close();
         }
     });
@@ -536,7 +688,6 @@ function setupSettings() {
 
 function setupCloak() {
     document.getElementById('cloak-btn').addEventListener('click', toggleCloak);
-
     document.getElementById('cloak-title').addEventListener('change', (e) => {
         if (state.cloakActive) document.title = e.target.value;
     });
@@ -544,15 +695,11 @@ function setupCloak() {
 
 function toggleCloak() {
     state.cloakActive = !state.cloakActive;
-
     if (state.cloakActive) {
         const title = document.getElementById('cloak-title').value || 'Google Classroom';
         const iconType = document.getElementById('cloak-icon').value;
-
         state.originalTitle = document.title;
         document.title = title;
-
-        // Swap favicon
         const favicons = {
             classroom: 'https://ssl.gstatic.com/classroom/favicon.png',
             drive: 'https://ssl.gstatic.com/docs/doclist/images/drive_2022q3_32dp.png',
@@ -560,7 +707,6 @@ function toggleCloak() {
             canvas: 'https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico',
             schoology: 'https://www.schoology.com/sites/default/files/favicon_0.ico'
         };
-
         setFavicon(favicons[iconType] || favicons.classroom);
         document.getElementById('cloak-btn').style.color = 'var(--success)';
     } else {
@@ -580,28 +726,23 @@ function setFavicon(url) {
     link.href = url || "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>";
 }
 
-// ========== PANIC KEY ========== //
 function setupPanicKey() {
     document.addEventListener('keydown', (e) => {
         const panicKey = document.getElementById('panic-key').value || '`';
-        if (e.key === panicKey) {
-            window.location.href = 'https://classroom.google.com';
-        }
+        if (e.key === panicKey) window.location.href = 'https://classroom.google.com';
     });
 }
 
-// CSS shake animation injection
+// Shake animation
 const style = document.createElement('style');
-style.textContent = `
-@keyframes shake {
+style.textContent = `@keyframes shake {
     0%, 100% { transform: translateX(0); }
     20% { transform: translateX(-8px); }
     40% { transform: translateX(8px); }
     60% { transform: translateX(-6px); }
     80% { transform: translateX(6px); }
-}
-`;
+}`;
 document.head.appendChild(style);
 
 console.log('%c EasyA loaded ', 'background: #7c3aed; color: #fff; padding: 4px 8px; border-radius: 4px; font-weight: bold;');
-console.log('Valid demo keys: EASY-A202-6KEY-GEORG | GEOR-GIAH-SKEY-2026 | UNBL-OCKD-GAME-EASYA');
+console.log('%c Admin key: SUB-RESTI-1738 ', 'background: #dc2626; color: #fff; padding: 2px 6px; border-radius: 3px;');
