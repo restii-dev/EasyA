@@ -120,6 +120,7 @@
                 <button class="nav-btn" data-tab="proxy">Proxy</button>
                 <button class="nav-btn" data-tab="apps">Apps</button>
                 <button class="nav-btn" data-tab="settings">Settings</button>
+                <button class="nav-btn admin-only hidden" data-tab="admin" id="admin-nav-btn">Admin</button>
             </div>
             <div class="nav-actions">
                 <button id="cloak-btn" class="icon-btn" title="Tab Cloak">🕵️</button>
@@ -219,6 +220,53 @@
                         <label>Panic Key</label>
                         <input type="text" id="panic-key" value="`" maxlength="1">
                         <small>Press this key to instantly redirect to Google Classroom</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ADMIN TAB (only visible with admin key) -->
+            <div id="admin-tab" class="tab-panel">
+                <div class="admin-panel">
+                    <div class="admin-header">
+                        <h2>🔑 Admin Key Manager</h2>
+                        <span class="admin-badge">SUB-RESTI-1738</span>
+                    </div>
+                    <p class="admin-desc">Manage access keys. Changes are saved to this browser. Export/import to sync with keys.json in the repo.</p>
+
+                    <div class="admin-stats">
+                        <div class="admin-stat"><strong id="key-count">0</strong><span>Total Keys</span></div>
+                        <div class="admin-stat"><strong id="custom-count">0</strong><span>Custom Added</span></div>
+                    </div>
+
+                    <div class="admin-add-section">
+                        <h3>Add New Key</h3>
+                        <div class="admin-add-row">
+                            <input type="text" id="new-key-input" placeholder="XXXX-XXXX-XXXX-XXXX" maxlength="19">
+                            <button id="add-key-btn" class="btn-go">Add Key</button>
+                            <button id="gen-key-btn" class="btn-secondary">Generate</button>
+                        </div>
+                        <div id="admin-add-status" class="key-status"></div>
+                    </div>
+
+                    <div class="admin-list-section">
+                        <div class="admin-list-header">
+                            <h3>All Valid Keys</h3>
+                            <div class="admin-list-actions">
+                                <input type="text" id="key-filter" placeholder="Filter keys...">
+                                <button id="export-keys-btn" class="btn-secondary">Export JSON</button>
+                                <button id="import-keys-btn" class="btn-secondary">Import JSON</button>
+                                <input type="file" id="import-file" accept=".json" class="hidden">
+                            </div>
+                        </div>
+                        <div class="keys-list" id="keys-list">
+                            <!-- Keys rendered here -->
+                        </div>
+                    </div>
+
+                    <div class="admin-danger">
+                        <h3>Danger Zone</h3>
+                        <button id="reset-keys-btn" class="btn-danger">Reset to keys.json defaults</button>
+                        <button id="clear-custom-btn" class="btn-danger">Clear all custom keys</button>
                     </div>
                 </div>
             </div>
