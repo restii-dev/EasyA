@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Georgia High School Academic Support Portal | EasyA</title>
+    <meta name="description" content="Official academic help resource for Georgia high school students - study guides, tutoring resources, and educational support.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+</head>
+<body>
+    <!-- FAKE HELP SITE LAYER (shows for 30 seconds) -->
+    <div id="help-site" class="help-layer">
+        <header class="help-header">
+            <div class="logo">
+                <span class="logo-icon">📚</span>
+                <div>
+                    <h1>Georgia Academic Support Network</h1>
+                    <p class="tagline">Empowering Students Across the Peach State</p>
+                </div>
+            </div>
+            <nav>
+                <a href="#">Home</a>
+                <a href="#">Study Guides</a>
+                <a href="#">Tutoring</a>
+                <a href="#">Resources</a>
+                <a href="#">Contact</a>
+            </nav>
+        </header>
+
+        <main class="help-main">
+            <section class="hero">
+                <h2>Welcome, Georgia High School Students</h2>
+                <p>Free academic support tools designed specifically for students in Georgia public and private high schools. Access study materials, practice tests, and tutoring connections aligned with Georgia Standards of Excellence.</p>
+                <div class="hero-stats">
+                    <div class="stat"><strong>180+</strong><span>High Schools Served</span></div>
+                    <div class="stat"><strong>12k+</strong><span>Students Helped</span></div>
+                    <div class="stat"><strong>4.9★</strong><span>Average Rating</span></div>
+                </div>
+            </section>
+
+            <section class="resources-grid">
+                <div class="resource-card">
+                    <h3>📖 Study Guides</h3>
+                    <p>Comprehensive notes for Algebra I/II, Geometry, Biology, US History, and more aligned with GSE standards.</p>
+                    <button class="btn-primary">Browse Guides</button>
+                </div>
+                <div class="resource-card">
+                    <h3>🧮 Practice Tests</h3>
+                    <p>Full-length practice exams for EOC, SAT, ACT, and Georgia Milestone assessments.</p>
+                    <button class="btn-primary">Start Practice</button>
+                </div>
+                <div class="resource-card">
+                    <h3>👨‍🏫 Tutoring Hub</h3>
+                    <p>Connect with certified Georgia educators and peer tutors for live or asynchronous help.</p>
+                    <button class="btn-primary">Find a Tutor</button>
+                </div>
+                <div class="resource-card">
+                    <h3>📅 College Prep</h3>
+                    <p>FAFSA guides, HOPE Scholarship info, dual enrollment resources, and application checklists.</p>
+                    <button class="btn-primary">College Tools</button>
+                </div>
+            </section>
+
+            <section class="districts">
+                <h3>Supported Districts</h3>
+                <p>Atlanta Public Schools • Cobb County • Gwinnett County • DeKalb County • Fulton County • Clayton County • Cherokee County • Henry County • Forsyth County • and 40+ more across Georgia.</p>
+            </section>
+        </main>
+
+        <footer class="help-footer">
+            <p>© 2026 Georgia Academic Support Network • Not affiliated with the Georgia Department of Education</p>
+            <p class="loading-notice">Loading secure student portal... <span id="countdown">30</span>s</p>
+        </footer>
+    </div>
+
+    <!-- SIGN-IN / KEY SYSTEM LAYER -->
+    <div id="auth-layer" class="auth-layer hidden">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo">🔑 EasyA</div>
+                <h2>Secure Access Portal</h2>
+                <p>Enter your access key to continue</p>
+            </div>
+            
+            <form id="key-form" class="key-form">
+                <div class="input-group">
+                    <label for="access-key">Access Key</label>
+                    <input type="password" id="access-key" placeholder="XXXX-XXXX-XXXX-XXXX" autocomplete="off" maxlength="19">
+                    <div class="key-hint">Format: XXXX-XXXX-XXXX-XXXX</div>
+                </div>
+                
+                <div class="key-status" id="key-status"></div>
+                
+                <button type="submit" class="btn-unlock" id="unlock-btn">
+                    <span class="btn-text">Unlock Portal</span>
+                    <span class="btn-loader hidden">Verifying...</span>
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Need a key? Contact your site administrator.</p>
+                <div class="proxy-status">
+                    <span class="status-dot"></span>
+                    <span>Proxy Engine: Standby</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN GAMES / PROXY LAYER -->
+    <div id="main-app" class="main-app hidden">
+        <nav class="app-nav">
+            <div class="nav-brand">
+                <span class="brand-icon">🎮</span>
+                <span class="brand-text">EasyA</span>
+            </div>
+            <div class="nav-links">
+                <button class="nav-btn active" data-tab="games">Games</button>
+                <button class="nav-btn" data-tab="proxy">Proxy</button>
+                <button class="nav-btn" data-tab="apps">Apps</button>
+                <button class="nav-btn" data-tab="settings">Settings</button>
+            </div>
+            <div class="nav-actions">
+                <button id="cloak-btn" class="icon-btn" title="Tab Cloak">🕵️</button>
+                <button id="fullscreen-btn" class="icon-btn" title="Fullscreen">⛶</button>
+                <button id="logout-btn" class="icon-btn" title="Logout">⏻</button>
+            </div>
+        </nav>
+
+        <div class="app-content">
+            <!-- GAMES TAB -->
+            <div id="games-tab" class="tab-panel active">
+                <div class="games-header">
+                    <h2>Unblocked Games</h2>
+                    <div class="search-box">
+                        <input type="text" id="game-search" placeholder="Search games...">
+                    </div>
+                </div>
+                <div class="games-grid" id="games-grid">
+                    <!-- Games injected by JS -->
+                </div>
+            </div>
+
+            <!-- PROXY TAB -->
+            <div id="proxy-tab" class="tab-panel">
+                <div class="proxy-container">
+                    <div class="proxy-controls">
+                        <div class="proxy-url-bar">
+                            <select id="proxy-engine">
+                                <option value="ultraviolet">Ultraviolet</option>
+                                <option value="dynamic">Dynamic</option>
+                                <option value="rammerhead">Rammerhead</option>
+                                <option value="alloy">Alloy</option>
+                            </select>
+                            <input type="text" id="proxy-url" placeholder="https://example.com or search...">
+                            <button id="proxy-go" class="btn-go">Go</button>
+                        </div>
+                        <div class="proxy-tools">
+                            <button id="proxy-back" class="tool-btn">←</button>
+                            <button id="proxy-forward" class="tool-btn">→</button>
+                            <button id="proxy-reload" class="tool-btn">↻</button>
+                            <button id="proxy-home" class="tool-btn">⌂</button>
+                            <button id="proxy-inspect" class="tool-btn">🔍</button>
+                        </div>
+                    </div>
+                    <div class="proxy-frame-wrapper">
+                        <iframe id="proxy-frame" src="about:blank" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals"></iframe>
+                        <div class="proxy-overlay" id="proxy-overlay">
+                            <div class="proxy-loading">
+                                <div class="spinner"></div>
+                                <p>Initializing complex proxy chain...</p>
+                                <p class="proxy-detail">Routing through multi-node obfuscation layer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- APPS TAB -->
+            <div id="apps-tab" class="tab-panel">
+                <div class="apps-grid" id="apps-grid">
+                    <!-- Apps injected -->
+                </div>
+            </div>
+
+            <!-- SETTINGS TAB -->
+            <div id="settings-tab" class="tab-panel">
+                <div class="settings-panel">
+                    <h2>Settings</h2>
+                    <div class="setting-group">
+                        <label>Theme</label>
+                        <select id="theme-select">
+                            <option value="dark">Dark</option>
+                            <option value="midnight">Midnight</option>
+                            <option value="neon">Neon</option>
+                            <option value="light">Light</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label>Tab Cloak Title</label>
+                        <input type="text" id="cloak-title" value="Google Classroom">
+                    </div>
+                    <div class="setting-group">
+                        <label>Tab Cloak Icon</label>
+                        <select id="cloak-icon">
+                            <option value="classroom">Google Classroom</option>
+                            <option value="drive">Google Drive</option>
+                            <option value="docs">Google Docs</option>
+                            <option value="canvas">Canvas</option>
+                            <option value="schoology">Schoology</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label>About:Blank Cloak</label>
+                        <button id="about-blank-btn" class="btn-secondary">Open in about:blank</button>
+                    </div>
+                    <div class="setting-group">
+                        <label>Panic Key</label>
+                        <input type="text" id="panic-key" value="`" maxlength="1">
+                        <small>Press this key to instantly redirect to Google Classroom</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GAME PLAYER MODAL -->
+        <div id="game-modal" class="game-modal hidden">
+            <div class="modal-header">
+                <span id="game-title">Game</span>
+                <div class="modal-actions">
+                    <button id="game-fullscreen">⛶</button>
+                    <button id="game-close">✕</button>
+                </div>
+            </div>
+            <iframe id="game-frame" src="about:blank" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
