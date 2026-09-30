@@ -1,11 +1,27 @@
 /**
- * EasyA — type "ridgehigh" or "awesome" anywhere to open the admin portal.
- * Works on the shell site even if app.js is incomplete.
+ * EasyA — type "ridgehigh" or "awesome" → admin + Key Manager window.
  */
 (function () {
   var TARGETS = ['ridgehigh', 'awesome'];
   var buffer = '';
-  var maxLen = Math.max.apply(null, TARGETS.map(function (t) { return t.length; }));
+  var maxLen = 9;
+
+  function openKeys() {
+    function tryOpen() {
+      if (typeof openWinWindow === 'function') {
+        openWinWindow('win-keys-window');
+        return true;
+      }
+      return false;
+    }
+    if (!tryOpen()) {
+      var n = 0;
+      var t = setInterval(function () {
+        n++;
+        if (tryOpen() || n > 20) clearInterval(t);
+      }, 100);
+    }
+  }
 
   function goAdmin(via) {
     try {
@@ -37,12 +53,14 @@
     if (adminNav) adminNav.classList.add('active');
     if (adminTab) adminTab.classList.add('active');
 
-    if (typeof openWinWindow === 'function') { try { openWinWindow('win-keys-window'); } catch (e) {} }
+    if (typeof showAdminNav === 'function') { try { showAdminNav(); } catch (e) {} }
+    if (typeof setupWinDesktop === 'function') { try { setupWinDesktop(); } catch (e) {} }
+
+    openKeys();
     if (typeof renderKeysList === 'function') { try { renderKeysList(); } catch (e) {} }
     if (typeof updateAdminStats === 'function') { try { updateAdminStats(); } catch (e) {} }
-    if (typeof showAdminNav === 'function') { try { showAdminNav(); } catch (e) {} }
 
-    console.log('%c ' + (via || 'code') + ' → Admin portal ', 'background:#7c3aed;color:#fff;padding:4px 8px');
+    console.log('%c ' + (via || 'code') + ' → Keys / Admin ', 'background:#7c3aed;color:#fff;padding:4px 8px');
   }
 
   document.addEventListener('keydown', function (e) {
