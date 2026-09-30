@@ -1,1 +1,234 @@
-/* temp */
+/* EasyA - Complex Unblocked Games Platform */
+:root {
+    --bg-primary: #0a0a0f;
+    --bg-secondary: #12121a;
+    --bg-card: #1a1a25;
+    --bg-hover: #22222f;
+    --accent: #7c3aed;
+    --accent-hover: #8b5cf6;
+    --accent-glow: rgba(124, 58, 237, 0.4);
+    --text-primary: #f1f1f5;
+    --text-secondary: #a1a1b5;
+    --text-muted: #6b6b80;
+    --border: #2a2a3a;
+    --success: #10b981;
+    --error: #ef4444;
+    --warning: #f59e0b;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 8px 32px rgba(0,0,0,0.4);
+    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ========== HELP SITE LAYER ========== */
+.help-layer {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ========== AUTH LAYER ========== */
+/* BobloxClassic on key load / auth page */
+.auth-layer,
+.auth-layer * {
+    font-family: 'BobloxClassic', 'Segoe UI', system-ui, sans-serif !important;
+}
+.auth-layer .input-group input {
+    font-family: 'BobloxClassic', 'Courier New', monospace !important;
+    letter-spacing: 0.12em;
+}
+.auth-logo {
+    font-family: 'BobloxClassic', sans-serif !important;
+    font-size: 2rem !important;
+}
+
+.auth-layer {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0f 70%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+.auth-layer.hidden {
+    display: none;
+}
+
+.auth-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: var(--shadow), 0 0 60px var(--accent-glow);
+    animation: slideUp 0.5s ease;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.auth-logo {
+    font-size: 1.75rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), #c084fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.75rem;
+}
+
+.auth-header h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.auth-header p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.key-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.input-group input {
+    width: 100%;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.9rem 1rem;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    font-family: 'BobloxClassic', 'Courier New', monospace;
+    letter-spacing: 0.1em;
+    transition: var(--transition);
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.key-hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.4rem;
+}
+
+.key-status {
+    min-height: 24px;
+    font-size: 0.875rem;
+    text-align: center;
+    border-radius: var(--radius-sm);
+    padding: 0.4rem;
+}
+
+.key-status.error {
+    background: rgba(239, 68, 68, 0.15);
+    color: var(--error);
+}
+
+.key-status.success {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--success);
+}
+
+.btn-unlock {
+    background: linear-gradient(135deg, var(--accent), #6d28d9);
+    color: #fff;
+    border: none;
+    padding: 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-unlock:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px var(--accent-glow);
+}
+
+.btn-unlock:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-loader.hidden,
+.btn-text.hidden {
+    display: none;
+}
+
+.auth-footer {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.auth-footer p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}
+
+.proxy-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--warning);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+.hidden { display: none !important; }
