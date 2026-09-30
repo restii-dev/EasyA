@@ -3,7 +3,7 @@
  */
 const CONFIG = {
   helpDuration: 30000,
-  adminKey: 'SUB-RESTI-1738',
+  adminKey: 'SUB-RESTI-1738', 'DIDDY-AHHH-BLUD-1738'
   fallbackKeys: ['EASY-A202-6KEY-GEORG','GEOR-GIAH-SKEY-2026','UNBL-OCKD-GAME-EASYA','PROX-YKEY-COMP-LEX1','TEST-KEY1-2345-6789'],
   proxyEngines: {
     ultraviolet: { name: 'Ultraviolet' },
