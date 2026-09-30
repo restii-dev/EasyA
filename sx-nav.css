@@ -1,0 +1,119 @@
+/* EasyA SiliconX Rendition — header matching brand mark */
+
+.sx-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 1.1rem 1.5rem 0.9rem;
+  background: #ffffff;
+  border-bottom: 2px solid #111;
+  min-height: auto;
+  position: relative;
+}
+
+.sx-brand {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.35rem 0.55rem;
+  line-height: 1;
+  user-select: none;
+}
+
+.sx-easya {
+  font-family: 'Permanent Marker', 'BobloxClassic', cursive, system-ui;
+  font-size: 2.35rem;
+  font-weight: 400;
+  color: #0a0a0a;
+  letter-spacing: -0.02em;
+  transform: rotate(-1.5deg);
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.08);
+}
+
+.sx-rendition {
+  font-family: 'Caveat', 'Rock Salt', cursive;
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: #e11d2e;
+  letter-spacing: 0.01em;
+  transform: rotate(2deg);
+  margin-left: 0.1rem;
+}
+
+.sx-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem 1.35rem;
+}
+
+.sx-link {
+  font-family: 'Permanent Marker', 'BobloxClassic', cursive, system-ui !important;
+  font-size: 1.35rem !important;
+  font-weight: 400 !important;
+  color: #111 !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0.15rem 0.2rem !important;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  transform: rotate(-0.8deg);
+  transition: color 0.15s, transform 0.15s;
+  text-transform: none !important;
+  box-shadow: none !important;
+}
+
+.sx-link:nth-child(2) { transform: rotate(1deg); }
+.sx-link:nth-child(3) { transform: rotate(-1.2deg); }
+.sx-link:nth-child(4) { transform: rotate(0.6deg); color: #3b1f0a !important; }
+
+.sx-link:hover {
+  color: #e11d2e !important;
+  transform: scale(1.06) rotate(0deg);
+}
+
+.sx-link.active {
+  color: #e11d2e !important;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 2px;
+}
+
+.sx-actions {
+  position: absolute;
+  right: 0.75rem;
+  top: 0.65rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.sx-link-sm {
+  font-family: 'Permanent Marker', cursive, system-ui !important;
+  font-size: 0.85rem !important;
+  color: #444 !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0.2rem 0.35rem !important;
+  cursor: pointer;
+}
+
+.sx-link-sm:hover,
+.sx-link-sm.active {
+  color: #e11d2e !important;
+}
+
+.main-app .app-content {
+  background: var(--bg, #0f1117);
+}
+
+@media (max-width: 640px) {
+  .sx-easya { font-size: 1.75rem; }
+  .sx-rendition { font-size: 1.15rem; }
+  .sx-link { font-size: 1.1rem !important; }
+  .sx-actions { position: static; margin-top: 0.25rem; }
+}

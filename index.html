@@ -6,8 +6,10 @@
     <title>Walker County Tutoring Group | Academic Support — LaFayette, GA</title>
     <meta name="description" content="Walker County Tutoring Group provides free academic support, study sessions, and homework help for students in LaFayette, Chickamauga, Rossville, and across Walker County, Georgia.">
     <link href="https://fonts.cdnfonts.com/css/bobloxclassic" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Caveat:wght@600;700&family=Rock+Salt&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="shell.css">
+    <link rel="stylesheet" href="sx-nav.css">
     <link rel="stylesheet" href="admin-win.css">
     <link rel="stylesheet" href="mirror.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
@@ -106,17 +108,20 @@
         </div>
     </div>
     <div id="main-app" class="main-app hidden">
-        <nav class="app-nav">
-            <div class="nav-brand"><span class="brand-icon">🎮</span><span class="brand-text">EasyA</span></div>
-            <div class="nav-links">
-                <button class="nav-btn active" data-tab="games">Games</button>
-                <button class="nav-btn" data-tab="proxy">Proxy</button>
-                <button class="nav-btn" data-tab="apps">Apps</button>
-                <button class="nav-btn" data-tab="mirror">Mirror</button>
-                <button class="nav-btn" data-tab="settings">Settings</button>
-                <button class="nav-btn admin-only hidden" data-tab="admin" id="admin-nav-btn">Admin</button>
+        <nav class="app-nav sx-nav">
+            <div class="sx-brand">
+                <span class="sx-easya">EasyA</span>
+                <span class="sx-rendition">SiliconX Rendition</span>
             </div>
-            <div class="nav-actions">
+            <div class="nav-links sx-links">
+                <button class="nav-btn sx-link active" data-tab="games">Games</button>
+                <button class="nav-btn sx-link" data-tab="proxy">Proxy</button>
+                <button class="nav-btn sx-link" data-tab="mirror">Screen</button>
+                <button class="nav-btn sx-link admin-only hidden" data-tab="admin" id="admin-nav-btn">Admin</button>
+            </div>
+            <div class="nav-actions sx-actions">
+                <button class="nav-btn sx-link-sm" data-tab="apps" title="Apps">Apps</button>
+                <button class="nav-btn sx-link-sm" data-tab="settings" title="Settings">⚙</button>
                 <button id="cloak-btn" class="icon-btn" title="Tab Cloak">🕵️</button>
                 <button id="fullscreen-btn" class="icon-btn" title="Fullscreen">⛶</button>
                 <button id="logout-btn" class="icon-btn" title="Logout">⏻</button>
