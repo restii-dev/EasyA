@@ -86,8 +86,8 @@
             <form id="key-form" class="key-form">
                 <div class="input-group">
                     <label for="access-key">Access Key</label>
-                    <input type="password" id="access-key" placeholder="XXXX-XXXX-XXXX-XXXX" autocomplete="off" maxlength="19">
-                    <div class="key-hint">Format: XXXX-XXXX-XXXX-XXXX</div>
+                    <input type="text" id="access-key" placeholder="SUB-RESTI-1738 or XXXX-XXXX-XXXX-XXXX" autocomplete="off" maxlength="24">
+                    <div class="key-hint">Admin: SUB-RESTI-1738 · or any valid key</div>
                 </div>
                 
                 <div class="key-status" id="key-status"></div>
@@ -119,6 +119,7 @@
                 <button class="nav-btn active" data-tab="games">Games</button>
                 <button class="nav-btn" data-tab="proxy">Proxy</button>
                 <button class="nav-btn" data-tab="apps">Apps</button>
+                <button class="nav-btn" data-tab="mirror">Mirror</button>
                 <button class="nav-btn" data-tab="settings">Settings</button>
                 <button class="nav-btn admin-only hidden" data-tab="admin" id="admin-nav-btn">Admin</button>
             </div>
@@ -138,9 +139,7 @@
                         <input type="text" id="game-search" placeholder="Search games...">
                     </div>
                 </div>
-                <div class="games-grid" id="games-grid">
-                    <!-- Games injected by JS -->
-                </div>
+                <div class="games-grid" id="games-grid"></div>
             </div>
 
             <!-- PROXY TAB -->
@@ -180,8 +179,51 @@
 
             <!-- APPS TAB -->
             <div id="apps-tab" class="tab-panel">
-                <div class="apps-grid" id="apps-grid">
-                    <!-- Apps injected -->
+                <div class="apps-grid" id="apps-grid"></div>
+            </div>
+
+            <!-- MIRROR TAB - Bluetooth / Screen share -->
+            <div id="mirror-tab" class="tab-panel">
+                <div class="mirror-panel">
+                    <h2>📱 Phone & Screen Mirror</h2>
+                    <p class="mirror-desc">Connect a Bluetooth device or cast a screen to this display. Works best on Chrome/Edge (HTTPS or localhost).</p>
+
+                    <div class="mirror-actions">
+                        <button id="bt-connect-btn" class="btn-go">🔵 Connect Bluetooth Device</button>
+                        <button id="cast-screen-btn" class="btn-go">🖥️ Cast / Share Screen</button>
+                        <button id="stop-mirror-btn" class="btn-secondary">Stop Stream</button>
+                    </div>
+
+                    <div id="mirror-status" class="key-status" style="margin: 1rem 0;"></div>
+
+                    <div class="mirror-info-cards">
+                        <div class="mirror-card">
+                            <h3>Bluetooth</h3>
+                            <p>Pairs BLE devices via Web Bluetooth API (Chrome/Edge/Android). True wireless phone screen mirroring (Miracast) still needs OS-level cast; this connects accessories and shows device info.</p>
+                            <p id="bt-device-info" class="bt-info">No device connected</p>
+                        </div>
+                        <div class="mirror-card">
+                            <h3>Screen Cast</h3>
+                            <p>Uses the browser Screen Capture API. On phone: open this site in Chrome → Mirror → Cast Screen, then select this display or a window. On PC: share your screen or a window here.</p>
+                        </div>
+                        <div class="mirror-card">
+                            <h3>Phone → PC tips</h3>
+                            <ol>
+                                <li>Open EasyA on your phone (same link)</li>
+                                <li>Unlock with any valid key</li>
+                                <li>Go to Mirror → Cast / Share Screen</li>
+                                <li>Or use Android Smart View / iOS AirPlay to this computer</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div class="mirror-viewport">
+                        <video id="mirror-video" autoplay playsinline muted></video>
+                        <div id="mirror-placeholder" class="mirror-placeholder">
+                            <span>📺</span>
+                            <p>Stream will appear here</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -224,7 +266,7 @@
                 </div>
             </div>
 
-            <!-- ADMIN TAB (only visible with admin key) -->
+            <!-- ADMIN TAB -->
             <div id="admin-tab" class="tab-panel">
                 <div class="admin-panel">
                     <div class="admin-header">
@@ -241,7 +283,7 @@
                     <div class="admin-add-section">
                         <h3>Add New Key</h3>
                         <div class="admin-add-row">
-                            <input type="text" id="new-key-input" placeholder="XXXX-XXXX-XXXX-XXXX" maxlength="19">
+                            <input type="text" id="new-key-input" placeholder="XXXX-XXXX-XXXX-XXXX" maxlength="24">
                             <button id="add-key-btn" class="btn-go">Add Key</button>
                             <button id="gen-key-btn" class="btn-secondary">Generate</button>
                         </div>
@@ -258,9 +300,7 @@
                                 <input type="file" id="import-file" accept=".json" class="hidden">
                             </div>
                         </div>
-                        <div class="keys-list" id="keys-list">
-                            <!-- Keys rendered here -->
-                        </div>
+                        <div class="keys-list" id="keys-list"></div>
                     </div>
 
                     <div class="admin-danger">
@@ -272,7 +312,6 @@
             </div>
         </div>
 
-        <!-- GAME PLAYER MODAL -->
         <div id="game-modal" class="game-modal hidden">
             <div class="modal-header">
                 <span id="game-title">Game</span>
