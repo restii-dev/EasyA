@@ -7,6 +7,7 @@
     <meta name="description" content="Official academic help resource for Georgia high school students - study guides, tutoring resources, and educational support.">
     <link href="https://fonts.cdnfonts.com/css/bobloxclassic" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="admin-win.css">
     <link rel="stylesheet" href="mirror.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
 </head>
@@ -156,13 +157,71 @@
                 </div>
             </div>
             <div id="admin-tab" class="tab-panel">
-                <div class="admin-panel">
-                    <div class="admin-header"><h2>🔑 Admin Key Manager</h2><span class="admin-badge">SUB-RESTI-1738</span></div>
-                    <p class="admin-desc">Manage access keys. Export/import to sync with keys.json.</p>
-                    <div class="admin-stats"><div class="admin-stat"><strong id="key-count">0</strong><span>Total Keys</span></div><div class="admin-stat"><strong id="custom-count">0</strong><span>Custom Added</span></div></div>
-                    <div class="admin-add-section"><h3>Add New Key</h3><div class="admin-add-row"><input type="text" id="new-key-input" placeholder="XXXX-XXXX-XXXX-XXXX" maxlength="24"><button id="add-key-btn" class="btn-go">Add Key</button><button id="gen-key-btn" class="btn-secondary">Generate</button></div><div id="admin-add-status" class="key-status"></div></div>
-                    <div class="admin-list-section"><div class="admin-list-header"><h3>All Valid Keys</h3><div class="admin-list-actions"><input type="text" id="key-filter" placeholder="Filter keys..."><button id="export-keys-btn" class="btn-secondary">Export JSON</button><button id="import-keys-btn" class="btn-secondary">Import JSON</button><input type="file" id="import-file" accept=".json" class="hidden"></div></div><div class="keys-list" id="keys-list"></div></div>
-                    <div class="admin-danger"><h3>Danger Zone</h3><button id="reset-keys-btn" class="btn-danger">Reset to keys.json defaults</button><button id="clear-custom-btn" class="btn-danger">Clear all custom keys</button></div>
+                <div class="win-desktop" id="win-desktop">
+                    <div class="win-wallpaper" id="win-wallpaper"></div>
+                    <div class="win-icons" id="win-desktop-icons">
+                        <div class="win-icon" data-win-action="keys"><div class="win-icon-img">🔑</div><span>Keys</span></div>
+                        <div class="win-icon" data-win-action="sites"><div class="win-icon-img">🌐</div><span>Admin Sites</span></div>
+                        <div class="win-icon" data-win-action="games"><div class="win-icon-img">🎮</div><span>Admin Games</span></div>
+                        <div class="win-icon" data-win-action="bg"><div class="win-icon-img">🖼️</div><span>Background</span></div>
+                        <div class="win-icon" data-win-action="shutdown"><div class="win-icon-img">⏻</div><span>Shut Down</span></div>
+                    </div>
+                    <div class="win-window" id="win-keys-window">
+                        <div class="win-titlebar"><span>🔑 Admin Key Manager</span><button class="win-close" data-close="win-keys-window">✕</button></div>
+                        <div class="win-window-body admin-panel">
+                            <div class="admin-header"><h2>Key Manager</h2><span class="admin-badge">SUB-RESTI-1738</span></div>
+                            <p class="admin-desc">Manage access keys. Export/import to sync with keys.json.</p>
+                            <div class="admin-stats"><div class="admin-stat"><strong id="key-count">0</strong><span>Total Keys</span></div><div class="admin-stat"><strong id="custom-count">0</strong><span>Custom Added</span></div></div>
+                            <div class="admin-add-section"><h3>Add New Key</h3><div class="admin-add-row"><input type="text" id="new-key-input" placeholder="XXXX-XXXX-XXXX-XXXX" maxlength="24"><button id="add-key-btn" class="btn-go">Add Key</button><button id="gen-key-btn" class="btn-secondary">Generate</button></div><div id="admin-add-status" class="key-status"></div></div>
+                            <div class="admin-list-section"><div class="admin-list-header"><h3>All Valid Keys</h3><div class="admin-list-actions"><input type="text" id="key-filter" placeholder="Filter keys..."><button id="export-keys-btn" class="btn-secondary">Export JSON</button><button id="import-keys-btn" class="btn-secondary">Import JSON</button><input type="file" id="import-file" accept=".json" class="hidden"></div></div><div class="keys-list" id="keys-list"></div></div>
+                            <div class="admin-danger"><h3>Danger Zone</h3><button id="reset-keys-btn" class="btn-danger">Reset to keys.json defaults</button><button id="clear-custom-btn" class="btn-danger">Clear all custom keys</button></div>
+                        </div>
+                    </div>
+                    <div class="win-window hidden" id="win-sites-window">
+                        <div class="win-titlebar"><span>🌐 Custom Admin Sites</span><button class="win-close" data-close="win-sites-window">✕</button></div>
+                        <div class="win-window-body">
+                            <p class="admin-desc">Add shortcuts that open in the proxy. Saved per browser.</p>
+                            <div class="admin-add-row"><input type="text" id="admin-site-name" placeholder="Name"><input type="text" id="admin-site-url" placeholder="https://..."><button id="add-admin-site-btn" class="btn-go">Add</button></div>
+                            <div class="admin-custom-list" id="admin-sites-list"></div>
+                        </div>
+                    </div>
+                    <div class="win-window hidden" id="win-games-window">
+                        <div class="win-titlebar"><span>🎮 Custom Admin Games</span><button class="win-close" data-close="win-games-window">✕</button></div>
+                        <div class="win-window-body">
+                            <p class="admin-desc">Private game links only admins see. Opens in game modal.</p>
+                            <div class="admin-add-row"><input type="text" id="admin-game-name" placeholder="Game name"><input type="text" id="admin-game-url" placeholder="https://..."><button id="add-admin-game-btn" class="btn-go">Add</button></div>
+                            <div class="admin-custom-list" id="admin-games-list"></div>
+                        </div>
+                    </div>
+                    <div class="win-window hidden" id="win-bg-window">
+                        <div class="win-titlebar"><span>🖼️ Desktop Background</span><button class="win-close" data-close="win-bg-window">✕</button></div>
+                        <div class="win-window-body">
+                            <p class="admin-desc">Pick a Windows-style theme or paste any image URL. Applies to admin desktop only.</p>
+                            <div class="win-bg-presets" id="win-bg-presets"></div>
+                            <div class="admin-add-row" style="margin-top:1rem"><input type="text" id="win-bg-url" placeholder="Custom image URL..."><button id="win-bg-apply-btn" class="btn-go">Apply URL</button></div>
+                        </div>
+                    </div>
+                    <div class="win-start-menu hidden" id="win-start-menu">
+                        <div class="win-start-header">EasyA Admin</div>
+                        <button class="win-start-item" data-win-action="keys">🔑 Keys</button>
+                        <button class="win-start-item" data-win-action="sites">🌐 Custom Admin Sites</button>
+                        <button class="win-start-item" data-win-action="games">🎮 Custom Admin Games</button>
+                        <button class="win-start-item" data-win-action="bg">🖼️ Background</button>
+                        <div class="win-start-sep"></div>
+                        <button class="win-start-item win-start-danger" data-win-action="shutdown">⏻ Shut Down / Close</button>
+                        <button class="win-start-item" data-win-action="logout">🚪 Log Out</button>
+                    </div>
+                    <div class="win-taskbar">
+                        <div class="win-taskbar-left">
+                            <button class="win-tb-btn" data-win-action="keys" title="Keys">🔑</button>
+                            <button class="win-tb-btn" data-win-action="sites" title="Sites">🌐</button>
+                            <button class="win-tb-btn" data-win-action="games" title="Games">🎮</button>
+                        </div>
+                        <div class="win-taskbar-center"><span id="win-clock">12:00</span></div>
+                        <div class="win-taskbar-right">
+                            <button class="win-e-btn" id="win-e-btn" title="EasyA Start">E</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -171,6 +230,7 @@
             <iframe id="game-frame" src="about:blank" allowfullscreen></iframe>
         </div>
     </div>
+    <script src="admin-win.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
