@@ -1,0 +1,17 @@
+/* Mirror tab */
+.mirror-panel { max-width: 960px; }
+.mirror-panel h2 { margin-bottom: 0.5rem; }
+.mirror-desc { color: var(--text-secondary); margin-bottom: 1.25rem; font-size: 0.95rem; }
+.mirror-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1rem; }
+.mirror-info-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.mirror-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; }
+.mirror-card h3 { font-size: 0.95rem; margin-bottom: 0.5rem; }
+.mirror-card p, .mirror-card ol { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+.mirror-card ol { padding-left: 1.25rem; }
+.bt-info { margin-top: 0.75rem; font-family: 'Courier New', monospace; font-size: 0.8rem; color: var(--accent); }
+.mirror-viewport { position: relative; background: #000; border: 1px solid var(--border); border-radius: var(--radius); min-height: 320px; overflow: hidden; }
+#mirror-video { width: 100%; max-height: 70vh; display: none; background: #000; }
+#mirror-video.active { display: block; }
+.mirror-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); gap: 0.5rem; }
+.mirror-placeholder span { font-size: 3rem; }
+.mirror-placeholder.hidden { display: none; }
