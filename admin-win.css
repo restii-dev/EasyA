@@ -1,141 +1,501 @@
-/* ========== WINDOWS 10 ADMIN DESKTOP ========== */
+/* ========== WINDOWS 11–STYLE ADMIN DESKTOP ========== */
 #admin-tab.tab-panel.active {
-    display: block;
-    padding: 0;
-    margin: -1.5rem;
-    height: calc(100vh - 56px);
-    overflow: hidden;
+  display: block;
+  padding: 0;
+  margin: -1.5rem;
+  height: calc(100vh - 72px);
+  overflow: hidden;
 }
+
 .win-desktop {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    min-height: calc(100vh - 56px);
-    background: #0a1628;
-    overflow: hidden;
-    font-family: 'Segoe UI', system-ui, sans-serif;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: calc(100vh - 72px);
+  background: #0b1220;
+  overflow: hidden;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  color: #e8eef7;
 }
+
 .win-wallpaper {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, #1a3a5c 0%, #0d2137 40%, #1b4f72 100%);
-    background-size: cover;
-    background-position: center;
-    z-index: 0;
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(56, 189, 248, 0.18), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 90% 80%, rgba(124, 58, 237, 0.2), transparent 50%),
+    linear-gradient(160deg, #0b1220 0%, #152238 45%, #1a2740 100%);
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
 }
+
 .win-icons {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    gap: 0.5rem;
-    padding: 1rem;
-    max-height: calc(100% - 48px);
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 0.35rem;
+  padding: 1.25rem 1rem;
+  max-height: calc(100% - 52px);
 }
+
 .win-icon {
-    width: 72px;
-    text-align: center;
-    cursor: pointer;
-    padding: 0.4rem;
-    border-radius: 4px;
-    color: #fff;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
-    user-select: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  width: 84px;
+  padding: 0.65rem 0.4rem;
+  border-radius: 10px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s, transform 0.15s;
 }
-.win-icon:hover { background: rgba(255,255,255,0.12); }
-.win-icon:active { background: rgba(0,120,215,0.35); }
-.win-icon-img { font-size: 2rem; line-height: 1.4; }
-.win-icon span { display: block; font-size: 0.7rem; margin-top: 0.15rem; word-break: break-word; }
-.win-taskbar {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 40px;
-    background: rgba(16, 16, 16, 0.92);
-    border-top: 1px solid rgba(255,255,255,0.08);
-    display: flex;
-    align-items: center;
-    z-index: 50;
-    backdrop-filter: blur(12px);
+
+.win-icon:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
-.win-taskbar-left { display: flex; gap: 2px; padding-left: 4px; }
-.win-tb-btn {
-    background: transparent; border: none; color: #eee;
-    width: 40px; height: 36px; font-size: 1.1rem; cursor: pointer;
+
+.win-icon:active {
+  transform: scale(0.96);
+  background: rgba(255, 255, 255, 0.14);
 }
-.win-tb-btn:hover { background: rgba(255,255,255,0.1); }
-.win-taskbar-center { flex: 1; text-align: center; color: #ccc; font-size: 0.8rem; }
-.win-taskbar-right { display: flex; align-items: center; padding-right: 6px; }
-.win-e-btn {
-    width: 42px; height: 36px;
-    background: linear-gradient(180deg, #7c3aed, #5b21b6);
-    border: none; color: #fff; font-weight: 800; font-size: 1.15rem;
-    font-family: 'BobloxClassic', 'Segoe UI', sans-serif;
-    cursor: pointer; border-radius: 2px;
+
+.win-icon-img {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.65rem;
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
 }
-.win-e-btn:hover { filter: brightness(1.15); box-shadow: 0 0 12px rgba(124,58,237,0.5); }
-.win-start-menu {
-    position: absolute; bottom: 44px; right: 8px; width: 280px;
-    background: rgba(28, 28, 32, 0.96);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 8px 8px 0 0; z-index: 60;
-    box-shadow: 0 -8px 32px rgba(0,0,0,0.5);
-    overflow: hidden; backdrop-filter: blur(16px);
+
+.win-icon span {
+  font-size: 0.72rem;
+  text-align: center;
+  color: #f1f5f9;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  line-height: 1.2;
+  max-width: 100%;
+  word-break: break-word;
 }
-.win-start-menu.hidden { display: none; }
-.win-start-header {
-    padding: 1rem 1.1rem; font-weight: 700; font-size: 1rem;
-    background: linear-gradient(135deg, #7c3aed, #4c1d95); color: #fff;
-}
-.win-start-item {
-    display: block; width: 100%; text-align: left;
-    background: transparent; border: none; color: #e8e8ef;
-    padding: 0.75rem 1.1rem; font-size: 0.9rem; cursor: pointer; font-family: inherit;
-}
-.win-start-item:hover { background: rgba(124, 58, 237, 0.35); }
-.win-start-danger:hover { background: rgba(220, 38, 38, 0.4) !important; }
-.win-start-sep { height: 1px; background: rgba(255,255,255,0.1); margin: 0.25rem 0; }
+
 .win-window {
-    position: absolute; top: 8%; left: 50%; transform: translateX(-50%);
-    width: min(900px, 94%); max-height: calc(100% - 56px);
-    background: var(--bg-card, #1a1a25); border: 1px solid var(--border, #2a2a3a);
-    border-radius: 8px; z-index: 20; display: flex; flex-direction: column;
-    box-shadow: 0 16px 48px rgba(0,0,0,0.55); overflow: hidden;
+  position: absolute;
+  z-index: 10;
+  top: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(720px, 94vw);
+  max-height: calc(100% - 72px);
+  background: rgba(22, 30, 46, 0.94);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
-.win-window.hidden { display: none; }
+
+.win-window.hidden {
+  display: none !important;
+}
+
 .win-titlebar {
-    background: linear-gradient(180deg, #2a2a38, #1e1e28);
-    padding: 0.45rem 0.75rem; display: flex; justify-content: space-between;
-    align-items: center; font-size: 0.85rem; font-weight: 600; color: #e0e0ea;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 0.85rem;
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), transparent);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  cursor: default;
 }
+
 .win-close {
-    background: transparent; border: none; color: #aaa;
-    width: 28px; height: 24px; cursor: pointer; border-radius: 4px; font-size: 0.9rem;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
 }
-.win-close:hover { background: #e81123; color: #fff; }
-.win-window-body { padding: 1rem 1.25rem; overflow-y: auto; max-height: calc(100vh - 160px); }
-.win-window-body .admin-panel { max-width: none; }
+
+.win-close:hover {
+  background: #e11d48;
+  color: #fff;
+}
+
+.win-window-body {
+  padding: 1.1rem 1.25rem 1.35rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.win-window-body .admin-panel {
+  padding: 0;
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.admin-header h2 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #f8fafc;
+  margin: 0;
+}
+
+.admin-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  color: #fff;
+}
+
+.admin-desc {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.admin-stats {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.15rem;
+}
+
+.admin-stat {
+  flex: 1;
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.admin-stat strong {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #38bdf8;
+}
+
+.admin-stat span {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.admin-add-section h3,
+.admin-list-section h3,
+.admin-danger h3 {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #cbd5e1;
+  margin: 0 0 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.admin-add-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.admin-add-row input,
+.admin-list-actions input,
+#win-bg-url {
+  flex: 1;
+  min-width: 140px;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 0.55rem 0.75rem;
+  color: #f1f5f9;
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.admin-add-row input:focus,
+.admin-list-actions input:focus,
+#win-bg-url:focus {
+  border-color: #7c3aed;
+}
+
+.admin-list-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.65rem;
+}
+
+.admin-list-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.keys-list,
+.admin-custom-list {
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.5);
+}
+
+.keys-list .key-row,
+.admin-custom-list .admin-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.82rem;
+  font-family: ui-monospace, monospace;
+}
+
+.keys-list .key-row:last-child,
+.admin-custom-list .admin-item:last-child {
+  border-bottom: none;
+}
+
+.admin-danger {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.btn-go, .btn-secondary, .btn-danger {
+  border: none;
+  border-radius: 10px;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.1s, filter 0.15s;
+}
+
+.btn-go {
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  color: #fff;
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-danger {
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+.btn-go:hover, .btn-secondary:hover, .btn-danger:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
 .win-bg-presets {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 0.75rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 0.55rem;
 }
+
 .win-bg-preset {
-    height: 72px; border-radius: 8px; border: 2px solid transparent; cursor: pointer;
-    background-size: cover; background-position: center; position: relative; overflow: hidden;
+  aspect-ratio: 16/10;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  background-size: cover;
+  background-position: center;
+  transition: border-color 0.15s, transform 0.15s;
 }
-.win-bg-preset:hover, .win-bg-preset.active { border-color: var(--accent, #7c3aed); }
-.win-bg-preset span {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    background: rgba(0,0,0,0.55); color: #fff; font-size: 0.65rem;
-    padding: 0.2rem 0.35rem; text-align: center;
+
+.win-bg-preset:hover {
+  border-color: #7c3aed;
+  transform: scale(1.03);
 }
-.admin-custom-list { margin-top: 1rem; display: flex; flex-direction: column; gap: 0.4rem; }
-.admin-custom-row {
-    display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
-    background: var(--bg-secondary, #12121a); border: 1px solid var(--border, #2a2a3a);
-    border-radius: 8px; padding: 0.55rem 0.75rem;
+
+.win-bg-preset.active {
+  border-color: #38bdf8;
 }
-.admin-custom-row .open-link {
-    color: var(--accent, #7c3aed); cursor: pointer; font-weight: 600; font-size: 0.9rem;
+
+.win-start-menu {
+  position: absolute;
+  bottom: 52px;
+  right: 12px;
+  z-index: 30;
+  width: 280px;
+  background: rgba(22, 30, 46, 0.96);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+  padding: 0.5rem;
+  overflow: hidden;
 }
-.admin-custom-row button { background: transparent; border: none; color: var(--error, #ef4444); cursor: pointer; }
+
+.win-start-menu.hidden {
+  display: none !important;
+}
+
+.win-start-header {
+  padding: 0.75rem 0.85rem 0.55rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.win-start-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 0.55rem;
+  padding: 0.6rem 0.85rem;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: #e2e8f0;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s;
+}
+
+.win-start-item:hover {
+  background: rgba(124, 58, 237, 0.25);
+}
+
+.win-start-danger {
+  color: #fca5a5;
+}
+
+.win-start-danger:hover {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+.win-start-sep {
+  height: 1px;
+  margin: 0.35rem 0.5rem;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.win-taskbar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.65rem;
+  background: rgba(10, 14, 24, 0.88);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.win-taskbar-left,
+.win-taskbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 120px;
+}
+
+.win-taskbar-right {
+  justify-content: flex-end;
+}
+
+.win-taskbar-center {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  font-variant-numeric: tabular-nums;
+}
+
+.win-tb-btn {
+  width: 40px;
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #e2e8f0;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.win-tb-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.win-e-btn {
+  width: 40px;
+  height: 36px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(145deg, #7c3aed, #4f46e5);
+  color: #fff;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(124, 58, 237, 0.4);
+  transition: transform 0.12s, filter 0.12s;
+}
+
+.win-e-btn:hover {
+  filter: brightness(1.12);
+  transform: scale(1.05);
+}
+
+.key-status {
+  font-size: 0.8rem;
+  margin: 0.35rem 0;
+  min-height: 1.2em;
+}
+
+.key-status.success { color: #4ade80; }
+.key-status.error { color: #f87171; }
