@@ -55,6 +55,7 @@
 
     if (typeof showAdminNav === 'function') { try { showAdminNav(); } catch (e) {} }
     if (typeof setupWinDesktop === 'function') { try { setupWinDesktop(); } catch (e) {} }
+    if (typeof setupAdminPanel === 'function') { try { setupAdminPanel(); } catch (e) {} }
 
     openKeys();
     if (typeof renderKeysList === 'function') { try { renderKeysList(); } catch (e) {} }
@@ -79,7 +80,7 @@
   }, true);
 })();
 
-/* Auto-load themes pack if page forgot the tags */
+/* Auto-load core + Boblox + themes */
 (function(){
   function add(rel, tag){
     if(document.querySelector(tag==='link'?'link[href="'+rel+'"]':'script[src="'+rel+'"]')) return;
@@ -88,6 +89,8 @@
     else { el.src=rel; }
     document.head.appendChild(el);
   }
+  add('boblox-admin.css','link');
   add('admin-themes.css','link');
+  add('admin-core.js','script');
   setTimeout(function(){ add('admin-themes.js','script'); }, 50);
 })();

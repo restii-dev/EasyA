@@ -1,0 +1,81 @@
+/* BobloxClassic across admin + key UI */
+.auth-layer,
+.auth-card,
+.auth-logo,
+.btn-unlock,
+.key-hint,
+.win-desktop,
+.win-titlebar,
+.win-icon span,
+.win-start-menu,
+.win-start-item,
+.win-start-header,
+.win-e-btn,
+.win-tb-btn,
+.win-taskbar-center,
+.admin-header h2,
+.admin-desc,
+.admin-badge,
+.admin-stat,
+.admin-add-section h3,
+.admin-list-section h3,
+.admin-danger h3,
+.btn-go,
+.btn-secondary,
+.btn-danger,
+.keys-list,
+.key-row,
+.sx-easya {
+  font-family: 'BobloxClassic', 'Permanent Marker', cursive, system-ui !important;
+}
+
+.auth-logo {
+  font-size: 1.75rem;
+  letter-spacing: 0.02em;
+}
+
+.win-e-btn {
+  font-family: 'BobloxClassic', cursive !important;
+  font-size: 1.15rem !important;
+}
+
+.key-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.key-row code {
+  flex: 1;
+  font-family: ui-monospace, monospace;
+  font-size: 0.8rem;
+  color: #e2e8f0;
+}
+.key-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 0.15rem 0.4rem;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.1);
+  color: #94a3b8;
+  letter-spacing: 0.04em;
+}
+.key-badge.admin {
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  color: #fff;
+}
+.key-badge.custom {
+  background: rgba(56, 189, 248, 0.2);
+  color: #7dd3fc;
+}
+.key-del {
+  border: none;
+  background: transparent;
+  color: #f87171;
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 0.2rem 0.4rem;
+  border-radius: 6px;
+}
+.key-del:hover { background: rgba(239,68,68,0.2); }
