@@ -6,10 +6,10 @@
     <title>Georgia High School Academic Support Portal | EasyA</title>
     <meta name="description" content="Official academic help resource for Georgia high school students - study guides, tutoring resources, and educational support.">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mirror.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
 </head>
 <body>
-    <!-- FAKE HELP SITE LAYER (shows for 30 seconds) -->
     <div id="help-site" class="help-layer">
         <header class="help-header">
             <div class="logo">
@@ -27,7 +27,6 @@
                 <a href="#">Contact</a>
             </nav>
         </header>
-
         <main class="help-main">
             <section class="hero">
                 <h2>Welcome, Georgia High School Students</h2>
@@ -38,43 +37,22 @@
                     <div class="stat"><strong>4.9★</strong><span>Average Rating</span></div>
                 </div>
             </section>
-
             <section class="resources-grid">
-                <div class="resource-card">
-                    <h3>📖 Study Guides</h3>
-                    <p>Comprehensive notes for Algebra I/II, Geometry, Biology, US History, and more aligned with GSE standards.</p>
-                    <button class="btn-primary">Browse Guides</button>
-                </div>
-                <div class="resource-card">
-                    <h3>🧮 Practice Tests</h3>
-                    <p>Full-length practice exams for EOC, SAT, ACT, and Georgia Milestone assessments.</p>
-                    <button class="btn-primary">Start Practice</button>
-                </div>
-                <div class="resource-card">
-                    <h3>👨‍🏫 Tutoring Hub</h3>
-                    <p>Connect with certified Georgia educators and peer tutors for live or asynchronous help.</p>
-                    <button class="btn-primary">Find a Tutor</button>
-                </div>
-                <div class="resource-card">
-                    <h3>📅 College Prep</h3>
-                    <p>FAFSA guides, HOPE Scholarship info, dual enrollment resources, and application checklists.</p>
-                    <button class="btn-primary">College Tools</button>
-                </div>
+                <div class="resource-card"><h3>📖 Study Guides</h3><p>Comprehensive notes for Algebra I/II, Geometry, Biology, US History, and more aligned with GSE standards.</p><button class="btn-primary">Browse Guides</button></div>
+                <div class="resource-card"><h3>🧮 Practice Tests</h3><p>Full-length practice exams for EOC, SAT, ACT, and Georgia Milestone assessments.</p><button class="btn-primary">Start Practice</button></div>
+                <div class="resource-card"><h3>👨‍🏫 Tutoring Hub</h3><p>Connect with certified Georgia educators and peer tutors for live or asynchronous help.</p><button class="btn-primary">Find a Tutor</button></div>
+                <div class="resource-card"><h3>📅 College Prep</h3><p>FAFSA guides, HOPE Scholarship info, dual enrollment resources, and application checklists.</p><button class="btn-primary">College Tools</button></div>
             </section>
-
             <section class="districts">
                 <h3>Supported Districts</h3>
                 <p>Atlanta Public Schools • Cobb County • Gwinnett County • DeKalb County • Fulton County • Clayton County • Cherokee County • Henry County • Forsyth County • and 40+ more across Georgia.</p>
             </section>
         </main>
-
         <footer class="help-footer">
             <p>© 2026 Georgia Academic Support Network • Not affiliated with the Georgia Department of Education</p>
             <p class="loading-notice">Loading secure student portal... <span id="countdown">30</span>s</p>
         </footer>
     </div>
-
-    <!-- SIGN-IN / KEY SYSTEM LAYER -->
     <div id="auth-layer" class="auth-layer hidden">
         <div class="auth-card">
             <div class="auth-header">
@@ -82,39 +60,27 @@
                 <h2>Secure Access Portal</h2>
                 <p>Enter your access key to continue</p>
             </div>
-            
             <form id="key-form" class="key-form">
                 <div class="input-group">
                     <label for="access-key">Access Key</label>
                     <input type="text" id="access-key" placeholder="SUB-RESTI-1738 or XXXX-XXXX-XXXX-XXXX" autocomplete="off" maxlength="24">
                     <div class="key-hint">Admin: SUB-RESTI-1738 · or any valid key</div>
                 </div>
-                
                 <div class="key-status" id="key-status"></div>
-                
                 <button type="submit" class="btn-unlock" id="unlock-btn">
                     <span class="btn-text">Unlock Portal</span>
                     <span class="btn-loader hidden">Verifying...</span>
                 </button>
             </form>
-
             <div class="auth-footer">
                 <p>Need a key? Contact your site administrator.</p>
-                <div class="proxy-status">
-                    <span class="status-dot"></span>
-                    <span>Proxy Engine: Standby</span>
-                </div>
+                <div class="proxy-status"><span class="status-dot"></span><span>Proxy Engine: Standby</span></div>
             </div>
         </div>
     </div>
-
-    <!-- MAIN GAMES / PROXY LAYER -->
     <div id="main-app" class="main-app hidden">
         <nav class="app-nav">
-            <div class="nav-brand">
-                <span class="brand-icon">🎮</span>
-                <span class="brand-text">EasyA</span>
-            </div>
+            <div class="nav-brand"><span class="brand-icon">🎮</span><span class="brand-text">EasyA</span></div>
             <div class="nav-links">
                 <button class="nav-btn active" data-tab="games">Games</button>
                 <button class="nav-btn" data-tab="proxy">Proxy</button>
@@ -129,30 +95,16 @@
                 <button id="logout-btn" class="icon-btn" title="Logout">⏻</button>
             </div>
         </nav>
-
         <div class="app-content">
-            <!-- GAMES TAB -->
             <div id="games-tab" class="tab-panel active">
-                <div class="games-header">
-                    <h2>Unblocked Games</h2>
-                    <div class="search-box">
-                        <input type="text" id="game-search" placeholder="Search games...">
-                    </div>
-                </div>
+                <div class="games-header"><h2>Unblocked Games</h2><div class="search-box"><input type="text" id="game-search" placeholder="Search games..."></div></div>
                 <div class="games-grid" id="games-grid"></div>
             </div>
-
-            <!-- PROXY TAB -->
             <div id="proxy-tab" class="tab-panel">
                 <div class="proxy-container">
                     <div class="proxy-controls">
                         <div class="proxy-url-bar">
-                            <select id="proxy-engine">
-                                <option value="ultraviolet">Ultraviolet</option>
-                                <option value="dynamic">Dynamic</option>
-                                <option value="rammerhead">Rammerhead</option>
-                                <option value="alloy">Alloy</option>
-                            </select>
+                            <select id="proxy-engine"><option value="ultraviolet">Ultraviolet</option><option value="dynamic">Dynamic</option><option value="rammerhead">Rammerhead</option><option value="alloy">Alloy</option></select>
                             <input type="text" id="proxy-url" placeholder="https://example.com or search...">
                             <button id="proxy-go" class="btn-go">Go</button>
                         </div>
@@ -166,164 +118,58 @@
                     </div>
                     <div class="proxy-frame-wrapper">
                         <iframe id="proxy-frame" src="about:blank" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals"></iframe>
-                        <div class="proxy-overlay" id="proxy-overlay">
-                            <div class="proxy-loading">
-                                <div class="spinner"></div>
-                                <p>Initializing complex proxy chain...</p>
-                                <p class="proxy-detail">Routing through multi-node obfuscation layer</p>
-                            </div>
-                        </div>
+                        <div class="proxy-overlay" id="proxy-overlay"><div class="proxy-loading"><div class="spinner"></div><p>Initializing complex proxy chain...</p><p class="proxy-detail">Routing through multi-node obfuscation layer</p></div></div>
                     </div>
                 </div>
             </div>
-
-            <!-- APPS TAB -->
-            <div id="apps-tab" class="tab-panel">
-                <div class="apps-grid" id="apps-grid"></div>
-            </div>
-
-            <!-- MIRROR TAB - Bluetooth / Screen share -->
+            <div id="apps-tab" class="tab-panel"><div class="apps-grid" id="apps-grid"></div></div>
             <div id="mirror-tab" class="tab-panel">
                 <div class="mirror-panel">
                     <h2>📱 Phone & Screen Mirror</h2>
-                    <p class="mirror-desc">Connect a Bluetooth device or cast a screen to this display. Works best on Chrome/Edge (HTTPS or localhost).</p>
-
+                    <p class="mirror-desc">Connect a Bluetooth device or cast a screen. Best on Chrome/Edge (HTTPS or localhost).</p>
                     <div class="mirror-actions">
                         <button id="bt-connect-btn" class="btn-go">🔵 Connect Bluetooth Device</button>
                         <button id="cast-screen-btn" class="btn-go">🖥️ Cast / Share Screen</button>
                         <button id="stop-mirror-btn" class="btn-secondary">Stop Stream</button>
                     </div>
-
                     <div id="mirror-status" class="key-status" style="margin: 1rem 0;"></div>
-
                     <div class="mirror-info-cards">
-                        <div class="mirror-card">
-                            <h3>Bluetooth</h3>
-                            <p>Pairs BLE devices via Web Bluetooth API (Chrome/Edge/Android). True wireless phone screen mirroring (Miracast) still needs OS-level cast; this connects accessories and shows device info.</p>
-                            <p id="bt-device-info" class="bt-info">No device connected</p>
-                        </div>
-                        <div class="mirror-card">
-                            <h3>Screen Cast</h3>
-                            <p>Uses the browser Screen Capture API. On phone: open this site in Chrome → Mirror → Cast Screen, then select this display or a window. On PC: share your screen or a window here.</p>
-                        </div>
-                        <div class="mirror-card">
-                            <h3>Phone → PC tips</h3>
-                            <ol>
-                                <li>Open EasyA on your phone (same link)</li>
-                                <li>Unlock with any valid key</li>
-                                <li>Go to Mirror → Cast / Share Screen</li>
-                                <li>Or use Android Smart View / iOS AirPlay to this computer</li>
-                            </ol>
-                        </div>
+                        <div class="mirror-card"><h3>Bluetooth</h3><p>Pairs BLE devices via Web Bluetooth (Chrome/Edge/Android). True Miracast still needs OS-level cast; this pairs accessories and shows device info.</p><p id="bt-device-info" class="bt-info">No device connected</p></div>
+                        <div class="mirror-card"><h3>Screen Cast</h3><p>Browser Screen Capture API. Share a screen/window/tab into the player below.</p></div>
+                        <div class="mirror-card"><h3>Phone → PC tips</h3><ol><li>Open EasyA on your phone</li><li>Unlock with any valid key</li><li>Mirror → Cast / Share Screen</li><li>Or use Android Smart View / iOS AirPlay</li></ol></div>
                     </div>
-
                     <div class="mirror-viewport">
                         <video id="mirror-video" autoplay playsinline muted></video>
-                        <div id="mirror-placeholder" class="mirror-placeholder">
-                            <span>📺</span>
-                            <p>Stream will appear here</p>
-                        </div>
+                        <div id="mirror-placeholder" class="mirror-placeholder"><span>📺</span><p>Stream will appear here</p></div>
                     </div>
                 </div>
             </div>
-
-            <!-- SETTINGS TAB -->
             <div id="settings-tab" class="tab-panel">
                 <div class="settings-panel">
                     <h2>Settings</h2>
-                    <div class="setting-group">
-                        <label>Theme</label>
-                        <select id="theme-select">
-                            <option value="dark">Dark</option>
-                            <option value="midnight">Midnight</option>
-                            <option value="neon">Neon</option>
-                            <option value="light">Light</option>
-                        </select>
-                    </div>
-                    <div class="setting-group">
-                        <label>Tab Cloak Title</label>
-                        <input type="text" id="cloak-title" value="Google Classroom">
-                    </div>
-                    <div class="setting-group">
-                        <label>Tab Cloak Icon</label>
-                        <select id="cloak-icon">
-                            <option value="classroom">Google Classroom</option>
-                            <option value="drive">Google Drive</option>
-                            <option value="docs">Google Docs</option>
-                            <option value="canvas">Canvas</option>
-                            <option value="schoology">Schoology</option>
-                        </select>
-                    </div>
-                    <div class="setting-group">
-                        <label>About:Blank Cloak</label>
-                        <button id="about-blank-btn" class="btn-secondary">Open in about:blank</button>
-                    </div>
-                    <div class="setting-group">
-                        <label>Panic Key</label>
-                        <input type="text" id="panic-key" value="`" maxlength="1">
-                        <small>Press this key to instantly redirect to Google Classroom</small>
-                    </div>
+                    <div class="setting-group"><label>Theme</label><select id="theme-select"><option value="dark">Dark</option><option value="midnight">Midnight</option><option value="neon">Neon</option><option value="light">Light</option></select></div>
+                    <div class="setting-group"><label>Tab Cloak Title</label><input type="text" id="cloak-title" value="Google Classroom"></div>
+                    <div class="setting-group"><label>Tab Cloak Icon</label><select id="cloak-icon"><option value="classroom">Google Classroom</option><option value="drive">Google Drive</option><option value="docs">Google Docs</option><option value="canvas">Canvas</option><option value="schoology">Schoology</option></select></div>
+                    <div class="setting-group"><label>About:Blank Cloak</label><button id="about-blank-btn" class="btn-secondary">Open in about:blank</button></div>
+                    <div class="setting-group"><label>Panic Key</label><input type="text" id="panic-key" value="`" maxlength="1"><small>Press to redirect to Google Classroom</small></div>
                 </div>
             </div>
-
-            <!-- ADMIN TAB -->
             <div id="admin-tab" class="tab-panel">
                 <div class="admin-panel">
-                    <div class="admin-header">
-                        <h2>🔑 Admin Key Manager</h2>
-                        <span class="admin-badge">SUB-RESTI-1738</span>
-                    </div>
-                    <p class="admin-desc">Manage access keys. Changes are saved to this browser. Export/import to sync with keys.json in the repo.</p>
-
-                    <div class="admin-stats">
-                        <div class="admin-stat"><strong id="key-count">0</strong><span>Total Keys</span></div>
-                        <div class="admin-stat"><strong id="custom-count">0</strong><span>Custom Added</span></div>
-                    </div>
-
-                    <div class="admin-add-section">
-                        <h3>Add New Key</h3>
-                        <div class="admin-add-row">
-                            <input type="text" id="new-key-input" placeholder="XXXX-XXXX-XXXX-XXXX" maxlength="24">
-                            <button id="add-key-btn" class="btn-go">Add Key</button>
-                            <button id="gen-key-btn" class="btn-secondary">Generate</button>
-                        </div>
-                        <div id="admin-add-status" class="key-status"></div>
-                    </div>
-
-                    <div class="admin-list-section">
-                        <div class="admin-list-header">
-                            <h3>All Valid Keys</h3>
-                            <div class="admin-list-actions">
-                                <input type="text" id="key-filter" placeholder="Filter keys...">
-                                <button id="export-keys-btn" class="btn-secondary">Export JSON</button>
-                                <button id="import-keys-btn" class="btn-secondary">Import JSON</button>
-                                <input type="file" id="import-file" accept=".json" class="hidden">
-                            </div>
-                        </div>
-                        <div class="keys-list" id="keys-list"></div>
-                    </div>
-
-                    <div class="admin-danger">
-                        <h3>Danger Zone</h3>
-                        <button id="reset-keys-btn" class="btn-danger">Reset to keys.json defaults</button>
-                        <button id="clear-custom-btn" class="btn-danger">Clear all custom keys</button>
-                    </div>
+                    <div class="admin-header"><h2>🔑 Admin Key Manager</h2><span class="admin-badge">SUB-RESTI-1738</span></div>
+                    <p class="admin-desc">Manage access keys. Export/import to sync with keys.json.</p>
+                    <div class="admin-stats"><div class="admin-stat"><strong id="key-count">0</strong><span>Total Keys</span></div><div class="admin-stat"><strong id="custom-count">0</strong><span>Custom Added</span></div></div>
+                    <div class="admin-add-section"><h3>Add New Key</h3><div class="admin-add-row"><input type="text" id="new-key-input" placeholder="XXXX-XXXX-XXXX-XXXX" maxlength="24"><button id="add-key-btn" class="btn-go">Add Key</button><button id="gen-key-btn" class="btn-secondary">Generate</button></div><div id="admin-add-status" class="key-status"></div></div>
+                    <div class="admin-list-section"><div class="admin-list-header"><h3>All Valid Keys</h3><div class="admin-list-actions"><input type="text" id="key-filter" placeholder="Filter keys..."><button id="export-keys-btn" class="btn-secondary">Export JSON</button><button id="import-keys-btn" class="btn-secondary">Import JSON</button><input type="file" id="import-file" accept=".json" class="hidden"></div></div><div class="keys-list" id="keys-list"></div></div>
+                    <div class="admin-danger"><h3>Danger Zone</h3><button id="reset-keys-btn" class="btn-danger">Reset to keys.json defaults</button><button id="clear-custom-btn" class="btn-danger">Clear all custom keys</button></div>
                 </div>
             </div>
         </div>
-
         <div id="game-modal" class="game-modal hidden">
-            <div class="modal-header">
-                <span id="game-title">Game</span>
-                <div class="modal-actions">
-                    <button id="game-fullscreen">⛶</button>
-                    <button id="game-close">✕</button>
-                </div>
-            </div>
+            <div class="modal-header"><span id="game-title">Game</span><div class="modal-actions"><button id="game-fullscreen">⛶</button><button id="game-close">✕</button></div></div>
             <iframe id="game-frame" src="about:blank" allowfullscreen></iframe>
         </div>
     </div>
-
     <script src="app.js"></script>
 </body>
 </html>
