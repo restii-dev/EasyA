@@ -1,0 +1,14 @@
+{
+  "name": "easya",
+  "private": true,
+  "version": "1.0.0",
+  "description": "EasyA — Walker County Tutoring Group shell / student portal",
+  "scripts": {
+    "pages:deploy": "wrangler pages deploy . --project-name=easya",
+    "pages:dev": "wrangler pages dev .",
+    "deploy": "npm run pages:deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}
