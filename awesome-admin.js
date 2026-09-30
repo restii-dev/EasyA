@@ -78,3 +78,16 @@
     }
   }, true);
 })();
+
+/* Auto-load themes pack if page forgot the tags */
+(function(){
+  function add(rel, tag){
+    if(document.querySelector(tag==='link'?'link[href="'+rel+'"]':'script[src="'+rel+'"]')) return;
+    var el = document.createElement(tag==='link'?'link':'script');
+    if(tag==='link'){ el.rel='stylesheet'; el.href=rel; }
+    else { el.src=rel; }
+    document.head.appendChild(el);
+  }
+  add('admin-themes.css','link');
+  setTimeout(function(){ add('admin-themes.js','script'); }, 50);
+})();
