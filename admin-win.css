@@ -1,0 +1,141 @@
+/* ========== WINDOWS 10 ADMIN DESKTOP ========== */
+#admin-tab.tab-panel.active {
+    display: block;
+    padding: 0;
+    margin: -1.5rem;
+    height: calc(100vh - 56px);
+    overflow: hidden;
+}
+.win-desktop {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: calc(100vh - 56px);
+    background: #0a1628;
+    overflow: hidden;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+.win-wallpaper {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #1a3a5c 0%, #0d2137 40%, #1b4f72 100%);
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+}
+.win-icons {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 0.5rem;
+    padding: 1rem;
+    max-height: calc(100% - 48px);
+}
+.win-icon {
+    width: 72px;
+    text-align: center;
+    cursor: pointer;
+    padding: 0.4rem;
+    border-radius: 4px;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    user-select: none;
+}
+.win-icon:hover { background: rgba(255,255,255,0.12); }
+.win-icon:active { background: rgba(0,120,215,0.35); }
+.win-icon-img { font-size: 2rem; line-height: 1.4; }
+.win-icon span { display: block; font-size: 0.7rem; margin-top: 0.15rem; word-break: break-word; }
+.win-taskbar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 40px;
+    background: rgba(16, 16, 16, 0.92);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    z-index: 50;
+    backdrop-filter: blur(12px);
+}
+.win-taskbar-left { display: flex; gap: 2px; padding-left: 4px; }
+.win-tb-btn {
+    background: transparent; border: none; color: #eee;
+    width: 40px; height: 36px; font-size: 1.1rem; cursor: pointer;
+}
+.win-tb-btn:hover { background: rgba(255,255,255,0.1); }
+.win-taskbar-center { flex: 1; text-align: center; color: #ccc; font-size: 0.8rem; }
+.win-taskbar-right { display: flex; align-items: center; padding-right: 6px; }
+.win-e-btn {
+    width: 42px; height: 36px;
+    background: linear-gradient(180deg, #7c3aed, #5b21b6);
+    border: none; color: #fff; font-weight: 800; font-size: 1.15rem;
+    font-family: 'BobloxClassic', 'Segoe UI', sans-serif;
+    cursor: pointer; border-radius: 2px;
+}
+.win-e-btn:hover { filter: brightness(1.15); box-shadow: 0 0 12px rgba(124,58,237,0.5); }
+.win-start-menu {
+    position: absolute; bottom: 44px; right: 8px; width: 280px;
+    background: rgba(28, 28, 32, 0.96);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px 8px 0 0; z-index: 60;
+    box-shadow: 0 -8px 32px rgba(0,0,0,0.5);
+    overflow: hidden; backdrop-filter: blur(16px);
+}
+.win-start-menu.hidden { display: none; }
+.win-start-header {
+    padding: 1rem 1.1rem; font-weight: 700; font-size: 1rem;
+    background: linear-gradient(135deg, #7c3aed, #4c1d95); color: #fff;
+}
+.win-start-item {
+    display: block; width: 100%; text-align: left;
+    background: transparent; border: none; color: #e8e8ef;
+    padding: 0.75rem 1.1rem; font-size: 0.9rem; cursor: pointer; font-family: inherit;
+}
+.win-start-item:hover { background: rgba(124, 58, 237, 0.35); }
+.win-start-danger:hover { background: rgba(220, 38, 38, 0.4) !important; }
+.win-start-sep { height: 1px; background: rgba(255,255,255,0.1); margin: 0.25rem 0; }
+.win-window {
+    position: absolute; top: 8%; left: 50%; transform: translateX(-50%);
+    width: min(900px, 94%); max-height: calc(100% - 56px);
+    background: var(--bg-card, #1a1a25); border: 1px solid var(--border, #2a2a3a);
+    border-radius: 8px; z-index: 20; display: flex; flex-direction: column;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.55); overflow: hidden;
+}
+.win-window.hidden { display: none; }
+.win-titlebar {
+    background: linear-gradient(180deg, #2a2a38, #1e1e28);
+    padding: 0.45rem 0.75rem; display: flex; justify-content: space-between;
+    align-items: center; font-size: 0.85rem; font-weight: 600; color: #e0e0ea;
+}
+.win-close {
+    background: transparent; border: none; color: #aaa;
+    width: 28px; height: 24px; cursor: pointer; border-radius: 4px; font-size: 0.9rem;
+}
+.win-close:hover { background: #e81123; color: #fff; }
+.win-window-body { padding: 1rem 1.25rem; overflow-y: auto; max-height: calc(100vh - 160px); }
+.win-window-body .admin-panel { max-width: none; }
+.win-bg-presets {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 0.75rem;
+}
+.win-bg-preset {
+    height: 72px; border-radius: 8px; border: 2px solid transparent; cursor: pointer;
+    background-size: cover; background-position: center; position: relative; overflow: hidden;
+}
+.win-bg-preset:hover, .win-bg-preset.active { border-color: var(--accent, #7c3aed); }
+.win-bg-preset span {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: rgba(0,0,0,0.55); color: #fff; font-size: 0.65rem;
+    padding: 0.2rem 0.35rem; text-align: center;
+}
+.admin-custom-list { margin-top: 1rem; display: flex; flex-direction: column; gap: 0.4rem; }
+.admin-custom-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+    background: var(--bg-secondary, #12121a); border: 1px solid var(--border, #2a2a3a);
+    border-radius: 8px; padding: 0.55rem 0.75rem;
+}
+.admin-custom-row .open-link {
+    color: var(--accent, #7c3aed); cursor: pointer; font-weight: 600; font-size: 0.9rem;
+}
+.admin-custom-row button { background: transparent; border: none; color: var(--error, #ef4444); cursor: pointer; }
